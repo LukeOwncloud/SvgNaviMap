@@ -1,41 +1,8 @@
 package de.tuhh.ti5.androidsvgnavimap;
 
-import james.weka.android.LocateService;
-import james.weka.impl.Transformer;
-
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
-import net.sourceforge.zbar.Symbol;
-
-
-import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.InputStreamEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import ti5.dibusapp.navigation.CustomJavaScriptHandler;
-import ti5.dibusapp.navigation.SvgWebView;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.ServiceConnection;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager;
 import android.net.wifi.ScanResult;
@@ -55,11 +22,26 @@ import android.view.Window;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.Toast;
-
 import com.dm.zbar.android.scanner.ZBarConstants;
 import com.dm.zbar.android.scanner.ZBarScannerActivity;
-
 import de.tuhh.ti5.androidsvgnavimap.util.FileUtils;
+import james.weka.android.LocateService;
+import james.weka.impl.Transformer;
+import net.sourceforge.zbar.Symbol;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.InputStreamEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import ti5.dibusapp.navigation.CustomJavaScriptHandler;
+import ti5.dibusapp.navigation.SvgWebView;
+
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends Activity {
 
@@ -86,7 +68,6 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 
 		// ============== custom ===============
-
 		determineProjectName();
 
 		// use up-button
