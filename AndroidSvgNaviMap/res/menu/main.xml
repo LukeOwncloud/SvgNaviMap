@@ -68,6 +68,14 @@
         android:id="@+id/mapview_menu_clear_wifi_scans"
         android:title="Clear wifi scans"        
         />
-    
+
+    <item android:id="@+id/scan_conditions"
+            android:title="Scan Conditions"
+            android:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/test"
+          android:title="test"
+          android:showAsAction="ifRoom"/>
+
 
 </menu>
