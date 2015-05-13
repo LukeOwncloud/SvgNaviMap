@@ -19,10 +19,13 @@ import android.util.Log;
 import android.view.*;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 import com.dm.zbar.android.scanner.ZBarConstants;
 import com.dm.zbar.android.scanner.ZBarScannerActivity;
+import de.tuhh.ti5.androidsvgnavimap.db.ScanConditionParam;
 import de.tuhh.ti5.androidsvgnavimap.util.FileUtils;
 import james.weka.android.LocateService;
 import james.weka.impl.Transformer;
@@ -61,7 +64,8 @@ public class MainActivity extends Activity {
 
 //  Variables Scan Conditions
 
-    private String scanBuilding, scanFloor, scanWeather, scanDevices, scanPeople, scanBarrier;
+    private ScanConditionParam scanConditionParams = new ScanConditionParam();
+    private AlertDialog alertDialog;
 
     @SuppressLint({"NewApi", "SetJavaScriptEnabled"})
     @Override
@@ -70,6 +74,8 @@ public class MainActivity extends Activity {
 
         getWindow().requestFeature(Window.FEATURE_PROGRESS);
         setContentView(R.layout.activity_main);
+
+        createScanConditionsDialog();
 
         // ============== custom ===============
         determineProjectName();
@@ -522,38 +528,6 @@ public class MainActivity extends Activity {
                 return true;
 
             case R.id.scan_conditions:
-                
-                // get scan_conditions.xml view
-                LayoutInflater layoutInflater = LayoutInflater.from(context);
-                View scanConditionsView = layoutInflater.inflate(R.layout.scan_conditions, null);
-
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-
-                // set scan_conditions.xml to alert dialog builder
-                alertDialogBuilder.setView(scanConditionsView);
-
-                final EditText buildingInput = (EditText) scanConditionsView.findViewById(R.id.scan_condition_building);
-
-                // set dialog
-                alertDialogBuilder.
-                        setCancelable(false)
-                        .setPositiveButton("OK",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        scanBuilding = buildingInput.getText().toString();
-                                    }
-                                })
-                        .setNegativeButton("Cancel",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.cancel();
-                                    }
-                                });
-
-                // create dialog
-                AlertDialog alertDialog = alertDialogBuilder.create();
 
                 // show dialog
                 alertDialog.show();
@@ -562,15 +536,7 @@ public class MainActivity extends Activity {
 
             case R.id.test:
 
-//                EditText editText = (EditText) findViewById(R.id.test1);
-//
-//                Editable editable = editText.getText();
-//
-//                String text = editable.toString();
-
-                Log.v("EditText", scanBuilding);
-
-                toast(scanBuilding);
+                toast("Test");
 
                 return true;
 
@@ -578,6 +544,89 @@ public class MainActivity extends Activity {
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    private void createScanConditionsDialog() {
+        // get scan_conditions.xml view
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        final View scanConditionsView = layoutInflater.inflate(R.layout.scan_conditions, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+
+        // set scan_conditions.xml to alert dialog builder
+        alertDialogBuilder.setView(scanConditionsView);
+
+        // Scan conditions
+        final EditText buildingInput = (EditText) scanConditionsView.findViewById(R.id.scan_condition_building);
+
+        final EditText floorInput = (EditText) scanConditionsView.findViewById(R.id.scan_condition_floor);
+
+        final Spinner spinnerWeather = (Spinner) scanConditionsView.findViewById(R.id.scan_condition_weather);
+
+        final Spinner spinnerBarrier = (Spinner) scanConditionsView.findViewById(R.id.scan_condition_barrier);
+
+        final Spinner spinnerDevices = (Spinner) scanConditionsView.findViewById(R.id.scan_condition_devices);
+
+        final Spinner spinnerPeople = (Spinner) scanConditionsView.findViewById(R.id.scan_condition_people);
+
+        ArrayAdapter<CharSequence> adapterWeather = ArrayAdapter.createFromResource(this,
+                R.array.weather_array, android.R.layout.simple_spinner_item);
+
+        // Specify the layout to use when the list of choices appears
+        adapterWeather.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinnerWeather.setAdapter(adapterWeather);
+
+        ArrayAdapter<CharSequence> adapterBarrier = ArrayAdapter.createFromResource(this,
+                R.array.barriers_array, android.R.layout.simple_spinner_item);
+
+        // Specify the layout to use when the list of choices appears
+        adapterBarrier.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinnerBarrier.setAdapter(adapterBarrier);
+
+        ArrayAdapter<CharSequence> adapterDevices = ArrayAdapter.createFromResource(this,
+                R.array.devices_array, android.R.layout.simple_spinner_item);
+
+        // Specify the layout to use when the list of choices appears
+        adapterDevices.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinnerDevices.setAdapter(adapterDevices);
+
+        ArrayAdapter<CharSequence> adapterPeople = ArrayAdapter.createFromResource(this,
+                R.array.people_array, android.R.layout.simple_spinner_item);
+
+        // Specify the layout to use when the list of choices appears
+        adapterPeople.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinnerPeople.setAdapter(adapterPeople);
+
+        // set dialog
+        alertDialogBuilder.
+                setCancelable(false)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                scanConditionParams.setScanBuilding(buildingInput.getText().toString()); // building
+                                scanConditionParams.setScanFloor(floorInput.getText().toString()); // Floor
+                                scanConditionParams.setScanWeather(spinnerWeather.getSelectedItem().toString()); // Barriers
+                                scanConditionParams.setScanDevices(spinnerDevices.getSelectedItem().toString()); // Devices
+                                scanConditionParams.setScanPeople(spinnerPeople.getSelectedItem().toString()); // People
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create dialog
+        alertDialog = alertDialogBuilder.create();
+
+
     }
 
     private void uploadArffFileToServer() {
