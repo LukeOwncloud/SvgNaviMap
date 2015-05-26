@@ -5,41 +5,41 @@ package de.tuhh.ti5.androidsvgnavimap.db.model;
  */
 public class Fingerprint {
 
-    private int fingerPrintID; // Primary Key
+    private long fingerPrintID; // Primary Key
     private String date;
     private String weather;
     private String barriers;
     private String electricDevices;
     private String people;
-    private int locationID; // Foreign Key
+    private Location location; // Foreign Key
 
     public Fingerprint() {
     }
 
-    public Fingerprint(String date, String weather, String barriers, String electricDevices, String people, int locationID) {
+    public Fingerprint(String date, String weather, String barriers, String electricDevices, String people, Location location) {
         this.date = date;
         this.weather = weather;
         this.barriers = barriers;
         this.electricDevices = electricDevices;
         this.people = people;
-        this.locationID = locationID;
+        this.location = location;
     }
 
-    public Fingerprint(int fingerPrintID, String date, String weather, String barriers, String electricDevices, String people, int locationID) {
+    public Fingerprint(long fingerPrintID, String date, String weather, String barriers, String electricDevices, String people, long locationID) {
         this.fingerPrintID = fingerPrintID;
         this.date = date;
         this.weather = weather;
         this.barriers = barriers;
         this.electricDevices = electricDevices;
         this.people = people;
-        this.locationID = locationID;
+        this.location = location;
     }
 
-    public int getFingerPrintID() {
+    public long getFingerPrintID() {
         return fingerPrintID;
     }
 
-    public void setFingerPrintID(int fingerPrintID) {
+    public void setFingerPrintID(long fingerPrintID) {
         this.fingerPrintID = fingerPrintID;
     }
 
@@ -83,11 +83,11 @@ public class Fingerprint {
         this.people = people;
     }
 
-    public int getLocationID() {
-        return locationID;
+    public Location getLocation() {
+        return location;
     }
 
-    public void setLocationID(int locationID) {
-        this.locationID = locationID;
+    public void setLocationID(Location location) {
+        this.location = location;
     }
 }
