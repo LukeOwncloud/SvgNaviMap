@@ -73,6 +73,7 @@ public class DBUtil {
         return formattedDate;
     }
 
+
 //    public void exportDatabase() {
 //        try {
 //            File sd = Environment.getExternalStorageDirectory();
@@ -101,26 +102,34 @@ public class DBUtil {
 
         String databaseName = DBHelper.DATABASE_NAME;
 
-        File sd = Environment.getExternalStorageDirectory();
-        File data = Environment.getDataDirectory();
-        FileChannel source=null;
-        FileChannel destination=null;
-        String currentDBPath = "/data/"+ "de.tuhh.ti5.androidsvgnavimap" +"/databases/"+databaseName;
-        String backupDBPath = databaseName + getCurrentTime();
-        File currentDB = new File(data, currentDBPath);
-        File backupDB = new File(sd, backupDBPath);
         try {
-            source = new FileInputStream(currentDB).getChannel();
-            destination = new FileOutputStream(backupDB).getChannel();
-            destination.transferFrom(source, 0, source.size());
-            source.close();
-            destination.close();
-            //Toast.makeText(this, "DB Exported!", Toast.LENGTH_LONG).show();
-        } catch(IOException e) {
+            File sd = Environment.getExternalStorageDirectory();
+            File data = Environment.getDataDirectory();
+
+            if (sd.canWrite()) {
+                String currentDBPath = "/data/" + "de.tuhh.ti5.androidsvgnavimap" + "/databases/" + databaseName;
+                String backupDBPath = databaseName + "_" + getCurrentTime();
+
+                File currentDB = new File(data, currentDBPath);
+
+                File backupDB = new File(sd + File.separator + "SVGDatabaseSave/", backupDBPath + ".db3");
+                //File backupDB = Utils.getSdDir("SVGDatabaseSave/" + databaseName + "_" + getCurrentTime());
+
+                if (currentDB.exists()) {
+
+                    FileChannel source = new FileInputStream(currentDB).getChannel();
+                    FileChannel destination = new FileOutputStream(backupDB).getChannel();
+
+                    destination.transferFrom(source, 0, source.size());
+
+                    source.close();
+
+                    destination.close();
+                }
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-
-
 }
+

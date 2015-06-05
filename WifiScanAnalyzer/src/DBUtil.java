@@ -11,6 +11,7 @@ import java.util.*;
  */
 public class DBUtil {
 
+    private static final int nFingerprintsToTraining = 1;
 
     public static List<String> getDistinctMacs(Connection connection) {
 
@@ -57,51 +58,73 @@ public class DBUtil {
 
     }
 
-    public static HashMap<Integer, List<SingleDBResult>> getResultQueryMap(String query, Statement statement) throws SQLException {
+    public static JavaInternalDatabase buildDatabase(String query, Statement statement) throws SQLException {
 
-        HashMap<Integer, List<SingleDBResult>> dbQueryMap = new HashMap<>();
+        Map<String, Set<Integer>> oneLocationToAllFingerprintsMap = new HashMap<>();
+        Map<Integer, List<SingleDBResult>> oneFingerPrintToAllMacsMap = new HashMap<>();
 
-        List<SingleDBResult> singleDBResultList = new ArrayList<>();
+        List<String> vertexes = new ArrayList<>();
+        List<String> bssids = new ArrayList<>();
 
         ResultSet resultSet = statement.executeQuery(query);
-
-        int previousFingerprint = 0;
-        boolean first = true;
 
         while (resultSet.next()) {
 
             int fingerprint = resultSet.getInt("fp_ID");
+            int strength = resultSet.getInt("strength");
             String bssid = resultSet.getString("bssid");
             String vertex = resultSet.getString("vertex");
-            int strength = resultSet.getInt("strength");
 
-            if (first) {
-                previousFingerprint = fingerprint;
-                first = false;
+            SingleDBResult singleDBResult = new SingleDBResult(
+                    fingerprint, vertex, bssid, strength);
+
+            vertexes.add(vertex);
+            bssids.add(bssid);
+
+            List<SingleDBResult> singleDBResults = oneFingerPrintToAllMacsMap.get(fingerprint);
+            if (singleDBResults == null) {
+                singleDBResults = new ArrayList<>();
             }
+            singleDBResults.add(singleDBResult);
+            oneFingerPrintToAllMacsMap.put(fingerprint, singleDBResults);
 
-            if (fingerprint == previousFingerprint) {
-                SingleDBResult singleDBResult = new SingleDBResult(fingerprint, vertex, bssid, strength);
-                singleDBResultList.add(singleDBResult);
-
-            } else {
-                dbQueryMap.put(fingerprint, singleDBResultList);
-                singleDBResultList = new ArrayList<>();
-            }
-            previousFingerprint = fingerprint;
         }
         resultSet.close();
 
-        return dbQueryMap;
+        for (Map.Entry<Integer, List<SingleDBResult>> entry : oneFingerPrintToAllMacsMap.entrySet()) {
+
+            Integer fingerprint = entry.getKey();
+
+            String vertex = oneFingerPrintToAllMacsMap.get(fingerprint).get(0).getVertex();
+
+            Set<Integer> fingerprintIndexes = oneLocationToAllFingerprintsMap.get(vertex);
+            if (fingerprintIndexes == null) {
+                fingerprintIndexes = new HashSet<>();
+            }
+            fingerprintIndexes.add(fingerprint);
+            oneLocationToAllFingerprintsMap.put(vertex, fingerprintIndexes);
+        }
+
+        bssids = (List<String>) removeListDuplicates(bssids);
+        vertexes = (List<String>) removeListDuplicates(vertexes);
+
+        JavaInternalDatabase internalDatabase = new JavaInternalDatabase(
+                oneLocationToAllFingerprintsMap,
+                oneFingerPrintToAllMacsMap,
+                vertexes,
+                bssids);
+
+        return internalDatabase;
     }
 
-    public static WekaResultSet getWekaResultSets(HashMap<Integer, List<SingleDBResult>> map) {
+    public static WekaResultSet getWekaResultSet(Map<Integer, List<SingleDBResult>> map) {
 
         HashMap<Integer, List<SingleDBResult>> testSet = new HashMap<>();
         HashMap<Integer, List<SingleDBResult>> trainingSet = new HashMap<>();
 
         String previousVertex = null;
         boolean first = true;
+
         for (Map.Entry<Integer, List<SingleDBResult>> entry : map.entrySet()) {
 
             int fingerprint = entry.getKey();
@@ -128,7 +151,55 @@ public class DBUtil {
 
     }
 
-    public static void writeARFF(String fileURL, int testNumber, List<String> distinctMacs, List<String> distinctRooms, HashMap<Integer, List<SingleDBResult>> dataset) {
+    public static WekaResultSet getWekaResultSet(JavaInternalDatabase database) {
+
+        if (nFingerprintsToTraining <= 0) {
+            System.err.println("\nNUMBER OF FINGERPRINTS NEEDS TO BE BIGGER THAN 0 (ZERO), SO WE CAN HAVE A TEST SET.");
+            System.exit(0);
+        }
+
+        Map<Integer, List<SingleDBResult>> fingerprintsMap = database.getOneFingerPrintToAllMacsMap();
+        Map<String, Set<Integer>> locationsMap = database.getOneLocationToAllFingerprintsMap();
+
+        HashMap<Integer, List<SingleDBResult>> testSet = new HashMap<>();
+        HashMap<Integer, List<SingleDBResult>> trainingSet = new HashMap<>();
+
+        for (Map.Entry<String, Set<Integer>> location : locationsMap.entrySet()) {
+
+            String vertex = location.getKey();
+
+            Set<Integer> fingerprintIndexes = locationsMap.get(vertex);
+
+            int nFpIndexes = fingerprintIndexes.size();
+
+            if (nFingerprintsToTraining >= nFpIndexes) {
+
+                System.err.println("\n\nREDUCE NUMBER OF TEST SET FINGERPRINTS -> Vertex " + vertex + "  only has " + nFpIndexes + " Fingerprint(s)!\n" );
+                System.exit(0);
+
+            } else {
+
+                int total = nFpIndexes;
+                for (int fp : fingerprintIndexes) {
+
+                    List<SingleDBResult> singleDBResultList = fingerprintsMap.get(fp);
+
+                    if (total > nFingerprintsToTraining) {
+                        testSet.put(fp, singleDBResultList);
+                    } else {
+                        trainingSet.put(fp, singleDBResultList);
+                    }
+                    total--;
+                }
+            }
+        }
+        WekaResultSet wekaResultSet = new WekaResultSet(testSet, trainingSet);
+
+        return wekaResultSet;
+
+    }
+
+    public static void writeARFF(String fileURL, int testNumber, List<String> distinctMacs, List<String> distinctRooms, Map<Integer, List<SingleDBResult>> dataset) {
 
         PrintWriter writer = null;
 
@@ -152,15 +223,14 @@ public class DBUtil {
             writer.println("@data");
             writer.println("");
 
-            int sizeOfAllMacs = distinctMacs.size();
+            int numberOfMacs = distinctMacs.size();
             for (Map.Entry<Integer, List<SingleDBResult>> entry : dataset.entrySet()) {
 
                 int fingerprint = entry.getKey();
                 String bssid = null;
 
                 List<SingleDBResult> singleDBResultList = dataset.get(fingerprint);
-
-                List<Integer> strengthList = new ArrayList<>(Collections.nCopies(sizeOfAllMacs, 0));
+                List<Integer> strengthList = new ArrayList<>(Collections.nCopies(numberOfMacs, 0));
 
                 for (SingleDBResult singleDBResult : singleDBResultList) {
 
@@ -168,7 +238,6 @@ public class DBUtil {
 
                     if (distinctMacs.contains(bssid)) {
                         int index = distinctMacs.indexOf(bssid);
-
                         strengthList.set(index, singleDBResult.getStrength());
                     }
                 }
@@ -176,7 +245,8 @@ public class DBUtil {
                 for (int strength : strengthList) {
                     writer.print(strength + ",");
                 }
-                writer.print(singleDBResultList.get(0).getVertex());
+                String vertex = singleDBResultList.get(0).getVertex();
+                writer.print(vertex);
                 writer.println("");
             }
 
@@ -185,5 +255,18 @@ public class DBUtil {
         } finally {
             writer.close();
         }
+    }
+
+    private static List<?> removeListDuplicates(List<?> list) {
+
+        List<Object> newList = new ArrayList<>();
+        
+        for (Object x : list) {
+
+            if (!newList.contains(x)) {
+                newList.add(x);
+            }
+        }
+        return newList;
     }
 }

@@ -12,9 +12,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by ruibrito on 04/06/15.
@@ -25,11 +23,13 @@ public class Analyzer {
     private static List<String> distinctMacs;
     private static List<String> distinctRooms;
 
+    private static JavaInternalDatabase database;
+
+    private static String DATABASE_LOCATION = "resources/Databases/fingerprintsDB_05-06-2015 18:51:15.db3";
+
     private static String RESULTS_FOLDER = "resources/Weka_Results/";
     private static String TEST_SET_FOLDER = "resources/ARFF_Testset/";
     private static String TRAINING_SET_FOLDER = "resources/ARFF_Trainingset/";
-    private static String DATABASE_LOCATION = "resources/fingerprintsDB.db3";
-
 
     public static void main(String[] args) throws Exception {
 
@@ -46,14 +46,13 @@ public class Analyzer {
 
             queriesForTesting = getQueriesForTesting();
 
-            distinctMacs = DBUtil.getDistinctMacs(connection);
+            // distinctMacs = DBUtil.getDistinctMacs(connection);
 
-            distinctRooms = DBUtil.getDistinctRooms(connection);
+            // distinctRooms = DBUtil.getDistinctRooms(connection);
 
             for (int testNumber = 0; testNumber < queriesForTesting.size(); testNumber++) {
 
                 System.out.print("Test " + testNumber + "...........");
-
                 String testQuery = queriesForTesting.get(testNumber);
 
                 createARFF(statement, testQuery, testNumber);
@@ -152,15 +151,38 @@ public class Analyzer {
         Evaluation eval = new Evaluation(newTrainingData);
         eval.evaluateModel(randomForest, testData);
 
-        String evalSummary = eval.toSummaryString("\nResults\n======\n", false);
-        String evalClassDetails = eval.toClassDetailsString("\n\n\nDetails\n======\n");
-        String evalConfusionMatrix = eval.toMatrixString("\n\n\nConfusion Matrix\n======\n");
+        String evalSummary = eval.toSummaryString("\nResults\n==================\n", false);
+        String evalClassDetails = eval.toClassDetailsString("\n\n\nDetails\n==================\n");
+        String evalConfusionMatrix = eval.toMatrixString("\n\n\nConfusion Matrix\n==================\n");
 
-        writeResultFile(testNumber, testQuery, evalSummary, evalClassDetails, evalConfusionMatrix);
+        double[][] confusionMatrix = eval.confusionMatrix();
 
+        Map<String, Double> matrixCorrectMap = new HashMap<>();
+        Map<String, Double> matrixIncorrectMap = new HashMap<>();
+
+
+        for (int i = 0; i < confusionMatrix.length; i++) {
+
+            double nDiagonal = confusionMatrix[i][i];
+
+            String room = distinctRooms.get(i);
+            if (nDiagonal != 0) {
+                matrixCorrectMap.put(room, nDiagonal);
+            } else {
+                matrixIncorrectMap.put(room, nDiagonal);
+            }
+        }
+        writeResultFile(
+                testNumber,
+                testQuery,
+                evalSummary,
+                evalClassDetails,
+                evalConfusionMatrix,
+                matrixCorrectMap,
+                matrixIncorrectMap);
     }
 
-    private static void writeResultFile(int testNumber, String query, String summary, String classDetails, String confusionMatrix) {
+    private static void writeResultFile(int testNumber, String query, String summary, String classDetails, String confusionMatrix, Map<String, Double> matrixCorrectMap, Map<String, Double> matrixIncorrectMap) {
 
         try {
             String fileName = RESULTS_FOLDER + "result" + testNumber + ".txt";
@@ -175,6 +197,29 @@ public class Analyzer {
             out.println(summary);
             out.println(classDetails);
             out.println(confusionMatrix);
+
+            out.print("\n");
+
+            out.println("\n\nCorrect Matrix Results \n==================\n");
+            if (matrixCorrectMap.isEmpty()) {
+                out.println("\tEMPTY");
+            } else {
+                for (String room : matrixCorrectMap.keySet()) {
+                    Double aDouble = matrixCorrectMap.get(room);
+                    out.println(room + " : " + aDouble);
+                }
+            }
+
+            out.println("\n\nIncorrect Matrix Results \n==================\n");
+            if (matrixIncorrectMap.isEmpty()) {
+                out.println("\tEMPTY");
+            } else {
+                for (String room : matrixIncorrectMap.keySet()) {
+                    Double aDouble = matrixIncorrectMap.get(room);
+                    out.println(room + " : " + aDouble);
+                }
+            }
+
             out.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -184,11 +229,16 @@ public class Analyzer {
 
     private static void createARFF(Statement statement, String testQuery, int testNumber) throws ClassNotFoundException, SQLException {
 
-        HashMap<Integer, List<SingleDBResult>> queryMap = DBUtil.getResultQueryMap(testQuery, statement);
+        database = DBUtil.buildDatabase(testQuery, statement);
 
-        WekaResultSet wekaResultSets = DBUtil.getWekaResultSets(queryMap);
+        distinctMacs = database.getAllBSSIDs();
+        distinctRooms = database.getAllRooms();
+
+        WekaResultSet wekaResultSets = DBUtil.getWekaResultSet(database);
 
         DBUtil.writeARFF(TEST_SET_FOLDER + "test", testNumber, distinctMacs, distinctRooms, wekaResultSets.getTestSet());
         DBUtil.writeARFF(TRAINING_SET_FOLDER + "training", testNumber, distinctMacs, distinctRooms, wekaResultSets.getTrainingSet());
     }
+
+
 }

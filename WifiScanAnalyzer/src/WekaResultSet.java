@@ -1,13 +1,14 @@
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ruibrito on 04/06/15.
  */
 public class WekaResultSet {
 
-    private HashMap<Integer, List<SingleDBResult>> testSet;
-    private HashMap<Integer, List<SingleDBResult>> trainingSet;
+    private Map<Integer, List<SingleDBResult>> testSet;
+    private Map<Integer, List<SingleDBResult>> trainingSet;
 
     public WekaResultSet() {
     }
@@ -17,19 +18,19 @@ public class WekaResultSet {
         this.trainingSet = trainingSet;
     }
 
-    public HashMap<Integer, List<SingleDBResult>> getTestSet() {
+    public Map<Integer, List<SingleDBResult>> getTestSet() {
         return testSet;
     }
 
-    public void setTestSet(HashMap<Integer, List<SingleDBResult>> testSet) {
+    public void setTestSet(Map<Integer, List<SingleDBResult>> testSet) {
         this.testSet = testSet;
     }
 
-    public HashMap<Integer, List<SingleDBResult>> getTrainingSet() {
+    public Map<Integer, List<SingleDBResult>> getTrainingSet() {
         return trainingSet;
     }
 
-    public void setTrainingSet(HashMap<Integer, List<SingleDBResult>> trainingSet) {
+    public void setTrainingSet(Map<Integer, List<SingleDBResult>> trainingSet) {
         this.trainingSet = trainingSet;
     }
 }
