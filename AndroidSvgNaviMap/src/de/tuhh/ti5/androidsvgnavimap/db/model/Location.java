@@ -6,22 +6,22 @@ package de.tuhh.ti5.androidsvgnavimap.db.model;
 public class Location {
 
     private long locationID; // Primary Key
-    private long vertex;
-    private int floor;
+    private String vertex;
+    private String floor;
     private String building;
     private String locationName;
 
     public Location() {
     }
 
-    public Location(long vertex, int floor, String building, String locationName) {
+    public Location(String vertex, String floor, String building, String locationName) {
         this.vertex = vertex;
         this.floor = floor;
         this.building = building;
         this.locationName = locationName;
     }
 
-    public Location(long locationID, long vertex, int floor, String building, String locationName) {
+    public Location(long locationID, String vertex, String floor, String building, String locationName) {
         this.locationID = locationID;
         this.vertex = vertex;
         this.floor = floor;
@@ -37,19 +37,19 @@ public class Location {
         this.locationID = locationID;
     }
 
-    public long getVertex() {
+    public String getVertex() {
         return vertex;
     }
 
-    public void setVertex(long vertex) {
+    public void setVertex(String vertex) {
         this.vertex = vertex;
     }
 
-    public int getFloor() {
+    public String getFloor() {
         return floor;
     }
 
-    public void setFloor(int floor) {
+    public void setFloor(String floor) {
         this.floor = floor;
     }
 

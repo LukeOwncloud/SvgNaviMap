@@ -24,7 +24,8 @@ public class MacDAO {
     private Context context;
 
     private String[] tableCollumns = {
-            DBHelper.MAC_ID, DBHelper.MAC_strength,
+            DBHelper.MAC_ID, DBHelper.MAC_SSID, DBHelper.MAC_BSSID,
+            DBHelper.MAC_strength,
             DBHelper.MAC_channel, DBHelper.MAC_fp};
 
     public MacDAO(Context context) {
@@ -48,10 +49,12 @@ public class MacDAO {
         dbHelper.close();
     }
 
-    public Mac createMac(long strength, long channel, long fingerprintID) {
+    public Mac createMac(String ssid, String bssid, int strength, int channel, long fingerprintID) {
 
         ContentValues values = new ContentValues();
 
+        values.put(DBHelper.MAC_SSID, ssid);
+        values.put(DBHelper.MAC_BSSID, bssid);
         values.put(DBHelper.MAC_strength, strength);
         values.put(DBHelper.MAC_channel, channel);
         values.put(DBHelper.MAC_fp, fingerprintID);
@@ -70,7 +73,11 @@ public class MacDAO {
         cursor.close();
 
         return newMac;
+    }
 
+    public void deleteAllMac() {
+        String sql = "DELETE FROM " + DBHelper.TABLE_MAC;
+        sqLiteDatabase.execSQL(sql);
     }
 
     private Mac cursorToMac(Cursor cursor) {
@@ -78,10 +85,12 @@ public class MacDAO {
         Mac mac = new Mac();
 
         mac.setMacID(cursor.getLong(0));
-        mac.setStrength(cursor.getLong(1));
-        mac.setChannel(cursor.getLong(2));
+        mac.setMacSSID(cursor.getString(1));
+        mac.setMacBSSID(cursor.getString(2));
+        mac.setStrength(cursor.getInt(3));
+        mac.setChannel(cursor.getInt(4));
 
-        long fingerprintID = cursor.getLong(3);
+        long fingerprintID = cursor.getLong(5);
 
         FingerprintDAO fingerprintDAO = new FingerprintDAO(context);
 

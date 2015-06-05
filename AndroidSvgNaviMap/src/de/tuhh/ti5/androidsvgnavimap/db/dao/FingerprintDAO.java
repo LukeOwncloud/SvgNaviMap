@@ -6,12 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import de.tuhh.ti5.androidsvgnavimap.db.DBHelper;
+import de.tuhh.ti5.androidsvgnavimap.db.DBUtil;
 import de.tuhh.ti5.androidsvgnavimap.db.model.Fingerprint;
 import de.tuhh.ti5.androidsvgnavimap.db.model.Location;
 
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 /**
  * Created by ruibrito on 15/05/15.
@@ -55,7 +54,7 @@ public class FingerprintDAO {
         ContentValues values = new ContentValues();
 
         if (date == null) {
-            values.put(DBHelper.FP_date, getCurrentDate());
+            values.put(DBHelper.FP_date, DBUtil.getCurrentTime());
         } else {
             values.put(DBHelper.FP_date, date);
         }
@@ -81,7 +80,7 @@ public class FingerprintDAO {
 
     public Fingerprint getFingerprintByID(long id) {
         Cursor cursor = sqLiteDatabase.query(
-                DBHelper.TABLE_LOCATION,
+                DBHelper.TABLE_FINGERPRINT,
                 tableCollumns,
                 DBHelper.FP_ID + " = ?", new String[]{String.valueOf(id)},
                 null, null, null);
@@ -93,6 +92,11 @@ public class FingerprintDAO {
         Fingerprint fingerprint = cursorToFingerprint(cursor);
 
         return fingerprint;
+    }
+
+    public void deleteAllFingerprints() {
+        String sql = "DELETE FROM " + DBHelper.TABLE_FINGERPRINT;
+        sqLiteDatabase.execSQL(sql);
     }
 
     private Fingerprint cursorToFingerprint(Cursor cursor) {
@@ -119,14 +123,7 @@ public class FingerprintDAO {
         return fp;
     }
 
-    private String getCurrentDate() {
-        Calendar rightNow = Calendar.getInstance();
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        String formattedDate = dateFormat.format(rightNow.getTime());
-
-        return formattedDate;
-    }
 
 
 }

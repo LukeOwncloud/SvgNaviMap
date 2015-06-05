@@ -1,8 +1,14 @@
 package de.tuhh.ti5.androidsvgnavimap.db;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.MatrixCursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+import java.util.ArrayList;
 
 /**
  * Created by ruibrito on 14/05/15.
@@ -13,10 +19,10 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String TAG = "DBHelper";
 
     // Database version
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     // Database name
-    private static final String DATABASE_NAME = "fingerprintsDB";
+    public static final String DATABASE_NAME = "fingerprintsDB";
 
     // Table names
     public static final String TABLE_FINGERPRINT = "fingerprint";
@@ -42,7 +48,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // MAC Table
     public static final String MAC_ID = "mac_ID";
-    public static final String MAC_mac = "mac";
+    public static final String MAC_SSID = "ssid";
+    public static final String MAC_BSSID = "bssid";
     public static final String MAC_strength = "strength";
     public static final String MAC_channel = "channel";
     public static final String MAC_fp = "mac_FP";
@@ -50,35 +57,39 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public static final String CREATE_LOCATION_TABLE =
             "CREATE TABLE " + TABLE_LOCATION + "("
-                    + LOC_ID + " INTEGER PRIMARY KEY AUTOINCREMENT"
-                    + LOC_vertex + " INTEGER"
-                    + LOC_floor + " INTEGER"
-                    + LOC_building + " TEXT"
-                    + LOC_alias + " TEXT";
+                    + LOC_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + LOC_vertex + " TEXT, "
+                    + LOC_floor + " TEXT, "
+                    + LOC_building + " TEXT, "
+                    + LOC_alias + " TEXT "
+                    + ");";
 
     public static final String CREATE_FINGERPRINT_TABLE =
             "CREATE TABLE " + TABLE_FINGERPRINT + "("
-                    + FP_ID + " INTEGER PRIMARY KEY AUTOINCREMENT"
-                    + FP_date + " TEXT"
-                    + FP_weather + " TEXT"
-                    + FP_barrier + " TEXT"
-                    + FP_devices + " TEXT"
-                    + FP_people + " TEXT"
-                    + FP_location + " TEXT"
+                    + FP_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + FP_date + " TEXT, "
+                    + FP_weather + " TEXT, "
+                    + FP_barrier + " TEXT, "
+                    + FP_devices + " TEXT, "
+                    + FP_people + " TEXT, "
+                    + FP_location + " TEXT, "
                     + "FOREIGN KEY(" + FP_location + ") REFERENCES "
-                    + TABLE_LOCATION + " (" + LOC_ID + ")";
+                    + TABLE_LOCATION + " (" + LOC_ID + ")"
+                    + ");";
 
     //    + FP_location + " TEXT " + "REFERENCES " + TABLE_LOCATION + " (" + LOC_ID + ")";
 
     public static final String CREATE_MAC_TABLE =
             "CREATE TABLE " + TABLE_MAC + "("
-                    + MAC_ID + " INTEGER PRIMARY KEY AUTOINCREMENT"
-                    + MAC_mac + " TEXT"
-                    + MAC_strength + " TEXT"
-                    + MAC_channel + " INTEGER"
-                    + MAC_fp + " TEXT"
+                    + MAC_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + MAC_SSID + " TEXT, "
+                    + MAC_BSSID + " TEXT, "
+                    + MAC_strength + " TEXT, "
+                    + MAC_channel + " INTEGER, "
+                    + MAC_fp + " TEXT, "
                     + "FOREIGN KEY(" + MAC_fp + ") REFERENCES "
-                    + TABLE_FINGERPRINT + " (" + FP_ID + ")";
+                    + TABLE_FINGERPRINT + " (" + FP_ID + ")"
+                    + ");";
 
 
     public DBHelper(Context context) {
@@ -98,7 +109,55 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MAC);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_FINGERPRINT);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOCATION);
+        onCreate(db);
+    }
 
+    public ArrayList<Cursor> getData(String Query) {
+        //get writable database
+        SQLiteDatabase sqlDB = this.getWritableDatabase();
+        String[] columns = new String[]{"mesage"};
+        //an array list of cursor to save two cursors one has results from the query
+        //other cursor stores error message if any errors are triggered
+        ArrayList<Cursor> alc = new ArrayList<Cursor>(2);
+        MatrixCursor Cursor2 = new MatrixCursor(columns);
+        alc.add(null);
+        alc.add(null);
+
+        try {
+            String maxQuery = Query;
+            //execute the query results will be save in Cursor c
+            Cursor c = sqlDB.rawQuery(maxQuery, null);
+
+            //add value to cursor2
+            Cursor2.addRow(new Object[]{"Success"});
+
+            alc.set(1, Cursor2);
+            if (null != c && c.getCount() > 0) {
+
+                alc.set(0, c);
+                c.moveToFirst();
+
+                return alc;
+            }
+            return alc;
+        } catch (SQLException sqlEx) {
+            Log.d("printing exception", sqlEx.getMessage());
+            //if any exceptions are triggered save the error message to cursor an return the arraylist
+            Cursor2.addRow(new Object[]{"" + sqlEx.getMessage()});
+            alc.set(1, Cursor2);
+            return alc;
+        } catch (Exception ex) {
+
+            Log.d("printing exception", ex.getMessage());
+
+            //if any exceptions are triggered save the error message to cursor an return the arraylist
+            Cursor2.addRow(new Object[]{"" + ex.getMessage()});
+            alc.set(1, Cursor2);
+            return alc;
+        }
 
     }
 }

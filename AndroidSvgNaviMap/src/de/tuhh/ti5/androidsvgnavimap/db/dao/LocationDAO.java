@@ -45,7 +45,7 @@ public class LocationDAO {
         dbHelper.close();
     }
 
-    public Location createLocation(long vertex, int floor, String building, String alias) {
+    public Location createLocation(String vertex, String floor, String building, String alias) {
         ContentValues values = new ContentValues();
 
         values.put(DBHelper.LOC_vertex, vertex);
@@ -69,27 +69,17 @@ public class LocationDAO {
         return newLocation;
     }
 
-    public Location getLocationID(long vertex, int floor, String building) {
-
-        Cursor cursor = sqLiteDatabase.query(DBHelper.TABLE_LOCATION,
-                tableColumns,
-                DBHelper.LOC_vertex + " = ? AND " + DBHelper.LOC_floor + " = ? AND " + DBHelper.LOC_building + " = ?",
-                new String[]{String.valueOf(vertex), String.valueOf(floor), building}, null, null, null);
-
-        if (cursor.moveToFirst()) {
-            return cursorToLocation(cursor);
-        } else {
-            return createLocation(vertex, floor, building, null);
-        }
-    }
-
-    public Location getLocationID(long vertex, int floor, String building, String alias) {
+    public Location getLocationID(String vertex, String floor, String building, String alias) {
 
         Cursor cursor = sqLiteDatabase.query(
                 DBHelper.TABLE_LOCATION,
                 tableColumns,
                 DBHelper.LOC_vertex + " = ? AND " + DBHelper.LOC_floor + " = ? AND " + DBHelper.LOC_building + " = ?",
-                new String[]{String.valueOf(vertex), String.valueOf(floor), building}, null, null, null);
+                new String[]{vertex, floor, building}, null, null, null);
+
+        if (alias == null) {
+            alias = String.valueOf(vertex);
+        }
 
         if (cursor.moveToFirst()) {
             return cursorToLocation(cursor);
@@ -114,12 +104,17 @@ public class LocationDAO {
         return location;
     }
 
+    public void deleteAllLocations() {
+        String sql = "DELETE FROM " + DBHelper.TABLE_LOCATION;
+        sqLiteDatabase.execSQL(sql);
+    }
+
     private Location cursorToLocation(Cursor cursor) {
         Location loc = new Location();
 
         loc.setLocationID(cursor.getLong(0));
-        loc.setVertex(cursor.getLong(1));
-        loc.setFloor(cursor.getInt(2));
+        loc.setVertex(cursor.getString(1));
+        loc.setFloor(cursor.getString(2));
         loc.setBuilding(cursor.getString(3));
         loc.setLocationName(cursor.getString(4));
 

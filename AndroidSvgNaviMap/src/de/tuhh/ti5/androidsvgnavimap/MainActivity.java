@@ -25,7 +25,14 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import com.dm.zbar.android.scanner.ZBarConstants;
 import com.dm.zbar.android.scanner.ZBarScannerActivity;
+import de.tuhh.ti5.androidsvgnavimap.db.AndroidDatabaseManager;
 import de.tuhh.ti5.androidsvgnavimap.db.ScanConditionParam;
+import de.tuhh.ti5.androidsvgnavimap.db.dao.FingerprintDAO;
+import de.tuhh.ti5.androidsvgnavimap.db.dao.LocationDAO;
+import de.tuhh.ti5.androidsvgnavimap.db.dao.MacDAO;
+import de.tuhh.ti5.androidsvgnavimap.db.DBUtil;
+import de.tuhh.ti5.androidsvgnavimap.db.model.Fingerprint;
+import de.tuhh.ti5.androidsvgnavimap.db.model.Location;
 import de.tuhh.ti5.androidsvgnavimap.util.FileUtils;
 import james.weka.android.LocateService;
 import james.weka.impl.Transformer;
@@ -62,10 +69,14 @@ public class MainActivity extends Activity {
 
     private SSIDMap map = new SSIDMap();
 
-//  Variables Scan Conditions
-
+    //  Variables Scan Conditions
     private ScanConditionParam scanConditionParams = new ScanConditionParam();
     private AlertDialog alertDialog;
+
+    // Test Vaiables
+    int fingerprintCount = 0;
+    int locationCount = 0;
+    int macCount = 0;
 
     @SuppressLint({"NewApi", "SetJavaScriptEnabled"})
     @Override
@@ -75,6 +86,7 @@ public class MainActivity extends Activity {
         getWindow().requestFeature(Window.FEATURE_PROGRESS);
         setContentView(R.layout.activity_main);
 
+        // create the wifi scan condition custom dialog
         createScanConditionsDialog();
 
         // ============== custom ===============
@@ -199,12 +211,11 @@ public class MainActivity extends Activity {
     boolean wifiLearningInProgress = false;
 
     private static final boolean COMBINE_MULTIPLE_SCANS = true;
-    private int NUMER_OF_SCANS_TO_COMBINE = 3;
+    private int NUMER_OF_SCANS_TO_COMBINE = 1;
     private int combineScanCount = 0;
     private List<ScanResult> combineWifiScanList = new ArrayList<ScanResult>();
 
     private synchronized void wifiLearnScan(final int nodeid) {
-
 
         Log.i(TAG, "Starting Wifi scan " + combineScanCount + 1);
         final WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
@@ -219,7 +230,6 @@ public class MainActivity extends Activity {
                 try {
                     Thread.sleep(50);
                 } catch (InterruptedException ignored) {
-
                 }
             }
         } else {
@@ -258,6 +268,54 @@ public class MainActivity extends Activity {
                     wifiScan = wifiScan_;
                 }
 
+                // #### Database input ###
+
+                LocationDAO locDAO = new LocationDAO(context);
+
+                Location location = locDAO.getLocationID(
+                        Integer.toString(nodeid),
+                        scanConditionParams.getScanFloor(),
+                        scanConditionParams.getScanBuilding(), null);
+
+                locationCount++;
+
+                FingerprintDAO fpDAO = new FingerprintDAO(context);
+
+                Fingerprint fingerprint = fpDAO.createFingerprint(
+                        null,
+                        scanConditionParams.getScanWeather(),
+                        scanConditionParams.getScanBarrier(),
+                        scanConditionParams.getScanDevices(),
+                        scanConditionParams.getScanPeople(),
+                        location.getLocationID());
+
+                fingerprintCount++;
+
+                MacDAO macDAO = new MacDAO(context);
+
+                for (ScanResult scanResult : wifiScan) {
+
+                    macDAO.createMac(
+                            scanResult.SSID,
+                            scanResult.BSSID,
+                            Math.abs(scanResult.level),
+                            DBUtil.scanFreqToChannel(scanResult.frequency),
+                            fingerprint.getFingerPrintID()
+                    );
+                    macCount++;
+                }
+
+                Log.v("Mac Count", String.valueOf(macCount).toString());
+                Log.v("Fingerprint Count", String.valueOf(fingerprintCount).toString());
+                Log.v("Location Count", String.valueOf(locationCount).toString());
+
+                macDAO.close();
+                fpDAO.close();
+                locDAO.close();
+
+                toast("Record saved");
+
+                // #### Database input END ###
 
                 CompleteScanResult completeScanResult = new CompleteScanResult(
                         wifiScan_);
@@ -267,7 +325,7 @@ public class MainActivity extends Activity {
 
 
                 wifiLearningInProgress = false;
-            }
+            } // end onReceive
 
         };
 
@@ -534,10 +592,33 @@ public class MainActivity extends Activity {
 
                 return true;
 
-            case R.id.test:
+            case R.id.database:
+                Intent dbmanager = new Intent(MainActivity.this, AndroidDatabaseManager.class);
+                startActivity(dbmanager);
 
-                toast("Test");
+                return true;
 
+            case R.id.reset_database:
+
+                FingerprintDAO fpDao = new FingerprintDAO(context);
+                MacDAO macDao = new MacDAO(context);
+                LocationDAO locDao = new LocationDAO(context);
+
+                macDao.deleteAllMac();
+                fpDao.deleteAllFingerprints();
+                locDao.deleteAllLocations();
+
+                macDao.close();
+                fpDao.close();
+                locDao.close();
+
+                toast("All records deleted");
+
+                return true;
+
+            case R.id.save_database:
+                DBUtil.exportDB();
+                toast("Export DB - Good");
                 return true;
 
             default:
@@ -610,7 +691,8 @@ public class MainActivity extends Activity {
                             public void onClick(DialogInterface dialog, int which) {
                                 scanConditionParams.setScanBuilding(buildingInput.getText().toString()); // building
                                 scanConditionParams.setScanFloor(floorInput.getText().toString()); // Floor
-                                scanConditionParams.setScanWeather(spinnerWeather.getSelectedItem().toString()); // Barriers
+                                scanConditionParams.setScanBarrier(spinnerBarrier.getSelectedItem().toString()); // Barrier
+                                scanConditionParams.setScanWeather(spinnerWeather.getSelectedItem().toString()); // Weather
                                 scanConditionParams.setScanDevices(spinnerDevices.getSelectedItem().toString()); // Devices
                                 scanConditionParams.setScanPeople(spinnerPeople.getSelectedItem().toString()); // People
                             }

@@ -12,6 +12,7 @@
     <uses-feature android:name="android.hardware.camera"/>
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <uses-sdk
             android:minSdkVersion="18"
@@ -45,6 +46,9 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="de.tuhh.ti5.androidsvgnavimap.MainActivity"/>
         </activity>
+
+        <activity android:name="de.tuhh.ti5.androidsvgnavimap.db.AndroidDatabaseManager"
+                  android:theme="@style/AppTheme"/>
 
         <service android:name="james.weka.android.LocateService"
                  android:description="@string/locate_service_description"/>

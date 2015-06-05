@@ -73,9 +73,16 @@
             android:title="Scan Conditions"
             android:showAsAction="ifRoom"/>
 
-    <item android:id="@+id/test"
-          android:title="test"
+    <item android:id="@+id/database"
+          android:title="Database Viewer"
           android:showAsAction="ifRoom"/>
 
+    <item android:id="@+id/reset_database"
+          android:title="Reset Database"
+          android:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/save_database"
+          android:title="Save DB"
+          android:showAsAction="ifRoom"/>
 
 </menu>

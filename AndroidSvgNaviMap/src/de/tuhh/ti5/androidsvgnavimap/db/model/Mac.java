@@ -6,21 +6,27 @@ package de.tuhh.ti5.androidsvgnavimap.db.model;
 public class Mac {
 
     private long macID;
-    private long strength;
-    private long channel;
+    private String macSSID;
+    private String macBSSID;
+    private int strength;
+    private int channel;
     private Fingerprint fingerprint;
 
     public Mac() {
     }
 
-    public Mac(long strength, long channel, Fingerprint fingerprint) {
+    public Mac(String macSSID, String macBSSID, int strength, int channel, Fingerprint fingerprint) {
+        this.macSSID = macSSID;
+        this.macBSSID = macBSSID;
         this.strength = strength;
         this.channel = channel;
         this.fingerprint = fingerprint;
     }
 
-    public Mac(long macID, long strength, long channel, Fingerprint fingerprint) {
+    public Mac(long macID, String macSSID, String macBSSID, int strength, int channel, Fingerprint fingerprint) {
         this.macID = macID;
+        this.macSSID = macSSID;
+        this.macBSSID = macBSSID;
         this.strength = strength;
         this.channel = channel;
         this.fingerprint = fingerprint;
@@ -34,19 +40,19 @@ public class Mac {
         this.macID = macID;
     }
 
-    public long getStrength() {
+    public int getStrength() {
         return strength;
     }
 
-    public void setStrength(long strength) {
+    public void setStrength(int strength) {
         this.strength = strength;
     }
 
-    public long getChannel() {
+    public int getChannel() {
         return channel;
     }
 
-    public void setChannel(long channel) {
+    public void setChannel(int channel) {
         this.channel = channel;
     }
 
@@ -56,5 +62,21 @@ public class Mac {
 
     public void setFingerprint(Fingerprint fingerprint) {
         this.fingerprint = fingerprint;
+    }
+
+    public String getMacSSID() {
+        return macSSID;
+    }
+
+    public void setMacSSID(String macSSID) {
+        this.macSSID = macSSID;
+    }
+
+    public String getMacBSSID() {
+        return macBSSID;
+    }
+
+    public void setMacBSSID(String macBSSID) {
+        this.macBSSID = macBSSID;
     }
 }
