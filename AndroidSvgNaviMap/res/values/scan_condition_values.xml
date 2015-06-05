@@ -25,13 +25,11 @@
     <string-array name="devices_array">
         <item>none</item>
         <item>yes</item>
-        <item>no</item>
         <item>unknow</item>
     </string-array>
 
     <string-array name="people_array">
         <item>none</item>
-        <item>no</item>
         <item>some</item>
         <item>crowd</item>
     </string-array>

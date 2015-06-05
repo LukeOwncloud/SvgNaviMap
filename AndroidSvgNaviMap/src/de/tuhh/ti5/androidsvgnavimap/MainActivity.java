@@ -313,14 +313,14 @@ public class MainActivity extends Activity {
                 fpDAO.close();
                 locDAO.close();
 
-                toast("Record saved");
+//                toast("Record saved");
 
                 // #### Database input END ###
 
-                CompleteScanResult completeScanResult = new CompleteScanResult(
-                        wifiScan_);
-
-                map.addScanResult(nodeid, completeScanResult);
+//                CompleteScanResult completeScanResult = new CompleteScanResult(
+//                        wifiScan_);
+//
+//                map.addScanResult(nodeid, completeScanResult);
                 toast("learned wifi fingerprint for room " + nodeid);
 
 

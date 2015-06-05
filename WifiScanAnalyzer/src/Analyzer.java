@@ -5,6 +5,7 @@ import weka.core.converters.ConverterUtils.DataSource;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.Remove;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,24 +13,30 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ruibrito on 04/06/15.
  */
 public class Analyzer {
 
-    private static List<String> queriesForTesting;
+    private static List<TestQuery> queriesForTesting;
     private static List<String> distinctMacs;
     private static List<String> distinctRooms;
 
     private static JavaInternalDatabase database;
 
-    private static String DATABASE_LOCATION = "resources/Databases/fingerprintsDB_05-06-2015 18:51:15.db3";
 
-    private static String RESULTS_FOLDER = "resources/Weka_Results/";
-    private static String TEST_SET_FOLDER = "resources/ARFF_Testset/";
-    private static String TRAINING_SET_FOLDER = "resources/ARFF_Trainingset/";
+    private static String DATABASE_FILENAME = "fingerprintsDB_05-06-2015 19:43:39.db3";
+
+
+    private static String DATABASE_LOCATION = "resources/Databases/" + DATABASE_FILENAME + "/";
+    private static String RESULTS_FOLDER = "resources/Weka_Results/" + DATABASE_FILENAME + "/";
+    private static String TEST_SET_FOLDER = "resources/ARFF_Testset/" + DATABASE_FILENAME + "/";
+    private static String TRAINING_SET_FOLDER = "resources/ARFF_Trainingset/" + DATABASE_FILENAME + "/";
 
     public static void main(String[] args) throws Exception {
 
@@ -50,14 +57,19 @@ public class Analyzer {
 
             // distinctRooms = DBUtil.getDistinctRooms(connection);
 
+            prepareSaveFolders();
+
             for (int testNumber = 0; testNumber < queriesForTesting.size(); testNumber++) {
 
                 System.out.print("Test " + testNumber + "...........");
-                String testQuery = queriesForTesting.get(testNumber);
 
-                createARFF(statement, testQuery, testNumber);
+                TestQuery testQuery = queriesForTesting.get(testNumber);
+                String query = testQuery.getQuery();
+                String queryNote = testQuery.getNote();
 
-                wekaAnalysis(testQuery, testNumber);
+                createARFF(statement, query, testNumber);
+
+                wekaAnalysis(query, testNumber, queryNote);
 
                 System.out.println(" done.");
 
@@ -79,46 +91,47 @@ public class Analyzer {
 
     }
 
-    public static List<String> getQueriesForTesting() {
+    private static void prepareSaveFolders() {
 
-        List<String> list = new ArrayList<>();
+        File testDir = new File(TEST_SET_FOLDER);
+        File trainingDir = new File(TRAINING_SET_FOLDER);
+        File resultsDir = new File(RESULTS_FOLDER);
 
-        String initialQuery = "SELECT F.fp_ID, M.mac_ID, M.bssid, M.strength, L.vertex, F.date\n" +
-                "  FROM \n" +
-                "      Fingerprint AS F \n" +
-                "          INNER JOIN\n" +
-                "      Location AS L\n" +
-                "          on F.fp_Location = L.loc_ID\n" +
-                "          INNER JOIN\n" +
-                "      Mac as M\n" +
-                "          on M.mac_FP = F.fp_ID\n";
+        if(!testDir.exists()) {
+            try {
+                testDir.mkdir();
+            } catch (SecurityException se) {
+                se.printStackTrace();
+            }
+        }
 
-        String where = "WHERE ";
+        if(!trainingDir.exists()) {
+            try {
+                trainingDir.mkdir();
+            } catch (SecurityException se) {
+                se.printStackTrace();
+            }
+        }
 
-        String query1 = "1 = 1";
-        String query2 = "1 = 1";
-        String query3 = "1 = 1";
-        String query4 = "1 = 1";
-        String query5 = "1 = 1";
-        String query6 = "1 = 1";
-        String query7 = "1 = 1";
-        String query8 = "1 = 1";
-        String query9 = "1 = 1";
-
-        list.add(initialQuery + where + query1);
-//        list.add(initialQuery + where + query2);
-//        list.add(initialQuery + where + query3);
-//        list.add(initialQuery + where + query4);
-//        list.add(initialQuery + where + query5);
-//        list.add(initialQuery + where + query6);
-//        list.add(initialQuery + where + query7);
-//        list.add(initialQuery + where + query8);
-//        list.add(initialQuery + where + query9);
-
-        return list;
+        if(!resultsDir.exists()) {
+            try {
+                resultsDir.mkdir();
+            } catch (SecurityException se) {
+                se.printStackTrace();
+            }
+        }
     }
 
-    private static void wekaAnalysis(String testQuery, int testNumber) throws Exception {
+    public static List<TestQuery> getQueriesForTesting() {
+
+        List<TestQuery> queries = new ArrayList<>();
+
+        queries.add(new TestQuery(" 1 = 1 ", "Corridor First Test"));
+
+        return queries;
+    }
+
+    private static void wekaAnalysis(String testQuery, int testNumber, String queryNote) throws Exception {
 
         String trainingDataPath = TRAINING_SET_FOLDER + "training" + testNumber + ".arff";
         String testDataPath = TEST_SET_FOLDER + "test" + testNumber + ".arff";
@@ -172,9 +185,11 @@ public class Analyzer {
                 matrixIncorrectMap.put(room, nDiagonal);
             }
         }
+
         writeResultFile(
                 testNumber,
                 testQuery,
+                queryNote,
                 evalSummary,
                 evalClassDetails,
                 evalConfusionMatrix,
@@ -182,7 +197,7 @@ public class Analyzer {
                 matrixIncorrectMap);
     }
 
-    private static void writeResultFile(int testNumber, String query, String summary, String classDetails, String confusionMatrix, Map<String, Double> matrixCorrectMap, Map<String, Double> matrixIncorrectMap) {
+    private static void writeResultFile(int testNumber, String testQuery, String queryNote, String summary, String classDetails, String confusionMatrix, Map<String, Double> matrixCorrectMap, Map<String, Double> matrixIncorrectMap) {
 
         try {
             String fileName = RESULTS_FOLDER + "result" + testNumber + ".txt";
@@ -191,9 +206,10 @@ public class Analyzer {
             PrintWriter out = new PrintWriter(outFile);
 
             // Write text to file
+            out.println("DATABASE :" + DATABASE_FILENAME);
             out.println("RESULT #" + testNumber);
-            out.println("\nQUERY: \n" + query);
-            out.print("\n \n \n");
+            out.println("\nQUERY: \n" + testQuery);
+            out.print("\nNOTE:\n" + queryNote + " \n \n");
             out.println(summary);
             out.println(classDetails);
             out.println(confusionMatrix);
