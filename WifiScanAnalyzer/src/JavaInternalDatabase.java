@@ -6,7 +6,7 @@ import java.util.*;
 public class JavaInternalDatabase {
 
     private Map<String, Set<Integer>> oneLocationToAllFingerprintsMap;
-    private Map<Integer, List<SingleDBResult>> oneFingerPrintToAllMacsMap;
+    private Map<Integer, List<QueryRowResult>> oneFingerPrintToAllMacsMap;
     private List<String> allRooms;
     private List<String> allBSSIDs;
 
@@ -18,7 +18,7 @@ public class JavaInternalDatabase {
         allRooms = new ArrayList<>();
     }
 
-    public JavaInternalDatabase(Map<String, Set<Integer>> oneLocationToAllFingerprintsMap, Map<Integer, List<SingleDBResult>> oneFingerPrintToAllMacsMap, List<String> allRooms, List<String> allBSSIDs) {
+    public JavaInternalDatabase(Map<String, Set<Integer>> oneLocationToAllFingerprintsMap, Map<Integer, List<QueryRowResult>> oneFingerPrintToAllMacsMap, List<String> allRooms, List<String> allBSSIDs) {
         this.oneLocationToAllFingerprintsMap = oneLocationToAllFingerprintsMap;
         this.oneFingerPrintToAllMacsMap = oneFingerPrintToAllMacsMap;
         this.allRooms = allRooms;
@@ -33,11 +33,11 @@ public class JavaInternalDatabase {
         this.oneLocationToAllFingerprintsMap = oneLocationToAllFingerprintsMap;
     }
 
-    public Map<Integer, List<SingleDBResult>> getOneFingerPrintToAllMacsMap() {
+    public Map<Integer, List<QueryRowResult>> getOneFingerPrintToAllMacsMap() {
         return oneFingerPrintToAllMacsMap;
     }
 
-    public void setOneFingerPrintToAllMacsMap(Map<Integer, List<SingleDBResult>> oneFingerPrintToAllMacsMap) {
+    public void setOneFingerPrintToAllMacsMap(Map<Integer, List<QueryRowResult>> oneFingerPrintToAllMacsMap) {
         this.oneFingerPrintToAllMacsMap = oneFingerPrintToAllMacsMap;
     }
 

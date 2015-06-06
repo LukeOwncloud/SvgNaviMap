@@ -51,27 +51,26 @@ public class Analyzer {
 
             statement = connection.createStatement();
 
-            queriesForTesting = getQueriesForTesting();
+            prepareOutputFolders();
 
             // distinctMacs = DBUtil.getDistinctMacs(connection);
-
             // distinctRooms = DBUtil.getDistinctRooms(connection);
 
-            prepareSaveFolders();
+            queriesForTesting = getQueriesForTesting();
+            for (TestQuery testQuery : queriesForTesting) {
 
-            for (int testNumber = 0; testNumber < queriesForTesting.size(); testNumber++) {
+                int testN = queriesForTesting.indexOf(testQuery);
 
-                System.out.print("Test " + testNumber + "...........");
+                System.out.print("Test " + testN + "...........");
 
-                TestQuery testQuery = queriesForTesting.get(testNumber);
                 String query = testQuery.getQuery();
                 String queryNote = testQuery.getNote();
 
-                createARFF(statement, query, testNumber);
-
-                wekaAnalysis(query, testNumber, queryNote);
+                createARFF(statement, query, testN);
+                wekaAnalysis(query, testN, queryNote);
 
                 System.out.println(" done.");
+
 
             }
             statement.close();
@@ -91,13 +90,13 @@ public class Analyzer {
 
     }
 
-    private static void prepareSaveFolders() {
+    private static void prepareOutputFolders() {
 
         File testDir = new File(TEST_SET_FOLDER);
         File trainingDir = new File(TRAINING_SET_FOLDER);
         File resultsDir = new File(RESULTS_FOLDER);
 
-        if(!testDir.exists()) {
+        if (!testDir.exists()) {
             try {
                 testDir.mkdir();
             } catch (SecurityException se) {
@@ -105,7 +104,7 @@ public class Analyzer {
             }
         }
 
-        if(!trainingDir.exists()) {
+        if (!trainingDir.exists()) {
             try {
                 trainingDir.mkdir();
             } catch (SecurityException se) {
@@ -113,7 +112,7 @@ public class Analyzer {
             }
         }
 
-        if(!resultsDir.exists()) {
+        if (!resultsDir.exists()) {
             try {
                 resultsDir.mkdir();
             } catch (SecurityException se) {
@@ -126,7 +125,7 @@ public class Analyzer {
 
         List<TestQuery> queries = new ArrayList<>();
 
-        queries.add(new TestQuery(" 1 = 1 ", "Corridor First Test"));
+        queries.add(new TestQuery(" 1 = 1 ", "Corredor First Test"));
 
         return queries;
     }
@@ -175,14 +174,25 @@ public class Analyzer {
 
 
         for (int i = 0; i < confusionMatrix.length; i++) {
-
             double nDiagonal = confusionMatrix[i][i];
-
             String room = distinctRooms.get(i);
-            if (nDiagonal != 0) {
-                matrixCorrectMap.put(room, nDiagonal);
-            } else {
-                matrixIncorrectMap.put(room, nDiagonal);
+            matrixCorrectMap.put(room, nDiagonal);
+        }
+
+        int matrixSize = confusionMatrix.length;
+        for (int i = 0; i < matrixSize; i++) {
+            String room = distinctRooms.get(i);
+            for (int j = 0; j < matrixSize; j++) {
+                if (i == j) {
+                    continue;
+                }
+                double value = confusionMatrix[i][j];
+                Double total = matrixIncorrectMap.get(room);
+                if (total == null) {
+                    total = 0.0;
+                }
+                total += value;
+                matrixIncorrectMap.put(room, total);
             }
         }
 
@@ -206,34 +216,32 @@ public class Analyzer {
             PrintWriter out = new PrintWriter(outFile);
 
             // Write text to file
-            out.println("DATABASE :" + DATABASE_FILENAME);
-            out.println("RESULT #" + testNumber);
-            out.println("\nQUERY: \n" + testQuery);
-            out.print("\nNOTE:\n" + queryNote + " \n \n");
+            out.println("DATABASE : " + DATABASE_FILENAME);
+            out.println("\nRESULT n_" + testNumber + " on " + DBUtil.getCurrentTime());
+            out.println("\nQUERY : \n" + testQuery);
+            out.print("\nNOTE : \n" + queryNote + " \n \n");
             out.println(summary);
             out.println(classDetails);
             out.println(confusionMatrix);
 
-            out.print("\n");
+            out.println("\nMatrix Results \n==================\n");
 
-            out.println("\n\nCorrect Matrix Results \n==================\n");
-            if (matrixCorrectMap.isEmpty()) {
-                out.println("\tEMPTY");
-            } else {
-                for (String room : matrixCorrectMap.keySet()) {
-                    Double aDouble = matrixCorrectMap.get(room);
-                    out.println(room + " : " + aDouble);
-                }
-            }
+            String sFormater = "%s\t%f\t%f\t%s";
 
-            out.println("\n\nIncorrect Matrix Results \n==================\n");
-            if (matrixIncorrectMap.isEmpty()) {
-                out.println("\tEMPTY");
-            } else {
-                for (String room : matrixIncorrectMap.keySet()) {
-                    Double aDouble = matrixIncorrectMap.get(room);
-                    out.println(room + " : " + aDouble);
+            out.printf("%s\t%s\t%s\t%s", "Room:", "Correct:", "Incorrect:", "Results:");
+            out.println("");
+            for (String room : distinctRooms) {
+
+                Double correct = matrixCorrectMap.get(room);
+                Double incorrect = matrixIncorrectMap.get(room);
+
+                double total = correct - incorrect;
+                if(total < 0) {
+                    out.printf(sFormater, room, correct, incorrect, "ATTENTION\n");
+                } else {
+                    out.printf(sFormater, room, correct, incorrect, "Normal\n");
                 }
+
             }
 
             out.close();
@@ -250,10 +258,12 @@ public class Analyzer {
         distinctMacs = database.getAllBSSIDs();
         distinctRooms = database.getAllRooms();
 
-        WekaResultSet wekaResultSets = DBUtil.getWekaResultSet(database);
+        WekaResultSet wekaResultSets = DBUtil.generateWekaResultSet(database);
 
-        DBUtil.writeARFF(TEST_SET_FOLDER + "test", testNumber, distinctMacs, distinctRooms, wekaResultSets.getTestSet());
-        DBUtil.writeARFF(TRAINING_SET_FOLDER + "training", testNumber, distinctMacs, distinctRooms, wekaResultSets.getTrainingSet());
+        DBUtil.writeARFF(TEST_SET_FOLDER + "test", testNumber,
+                distinctMacs, distinctRooms, wekaResultSets.getTestSet());
+        DBUtil.writeARFF(TRAINING_SET_FOLDER + "training", testNumber,
+                distinctMacs, distinctRooms, wekaResultSets.getTrainingSet());
     }
 
 

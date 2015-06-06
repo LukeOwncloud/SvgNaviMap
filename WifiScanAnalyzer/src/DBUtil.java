@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -60,11 +61,11 @@ public class DBUtil {
 
     public static JavaInternalDatabase buildDatabase(String query, Statement statement) throws SQLException {
 
-        Map<String, Set<Integer>> oneLocationToAllFingerprintsMap = new HashMap<>();
-        Map<Integer, List<SingleDBResult>> oneFingerPrintToAllMacsMap = new HashMap<>();
+        Map<String, Set<Integer>> oneLocationManyFingerprintsMap = new HashMap<>();
+        Map<Integer, List<QueryRowResult>> oneFingerprintManyMacsMap = new HashMap<>();
 
-        List<String> vertexes = new ArrayList<>();
-        List<String> bssids = new ArrayList<>();
+        List<String> listVertex = new ArrayList<>();
+        List<String> listBSSID = new ArrayList<>();
 
         ResultSet resultSet = statement.executeQuery(query);
 
@@ -75,61 +76,64 @@ public class DBUtil {
             String bssid = resultSet.getString("bssid");
             String vertex = resultSet.getString("vertex");
 
-            SingleDBResult singleDBResult = new SingleDBResult(
-                    fingerprint, vertex, bssid, strength);
+            QueryRowResult queryRowResult =
+                    new QueryRowResult(fingerprint, vertex, bssid, strength);
 
-            vertexes.add(vertex);
-            bssids.add(bssid);
 
-            List<SingleDBResult> singleDBResults = oneFingerPrintToAllMacsMap.get(fingerprint);
-            if (singleDBResults == null) {
-                singleDBResults = new ArrayList<>();
+            listVertex.add(vertex);
+            listBSSID.add(bssid);
+
+
+            List<QueryRowResult> queryResults = oneFingerprintManyMacsMap.get(fingerprint);
+            if (queryResults == null) {
+                queryResults = new ArrayList<>();
             }
-            singleDBResults.add(singleDBResult);
-            oneFingerPrintToAllMacsMap.put(fingerprint, singleDBResults);
+            queryResults.add(queryRowResult);
+            oneFingerprintManyMacsMap.put(fingerprint, queryResults);
 
         }
         resultSet.close();
 
-        for (Map.Entry<Integer, List<SingleDBResult>> entry : oneFingerPrintToAllMacsMap.entrySet()) {
+
+        for (Map.Entry<Integer, List<QueryRowResult>> entry : oneFingerprintManyMacsMap.entrySet()) {
 
             Integer fingerprint = entry.getKey();
 
-            String vertex = oneFingerPrintToAllMacsMap.get(fingerprint).get(0).getVertex();
+            String vertex = oneFingerprintManyMacsMap.get(fingerprint).get(0).getVertex();
 
-            Set<Integer> fingerprintIndexes = oneLocationToAllFingerprintsMap.get(vertex);
+            Set<Integer> fingerprintIndexes = oneLocationManyFingerprintsMap.get(vertex);
             if (fingerprintIndexes == null) {
                 fingerprintIndexes = new HashSet<>();
             }
             fingerprintIndexes.add(fingerprint);
-            oneLocationToAllFingerprintsMap.put(vertex, fingerprintIndexes);
+            oneLocationManyFingerprintsMap.put(vertex, fingerprintIndexes);
         }
 
-        bssids = (List<String>) removeListDuplicates(bssids);
-        vertexes = (List<String>) removeListDuplicates(vertexes);
+        listBSSID = (List<String>) removeListDuplicates(listBSSID);
+        listVertex = (List<String>) removeListDuplicates(listVertex);
 
         JavaInternalDatabase internalDatabase = new JavaInternalDatabase(
-                oneLocationToAllFingerprintsMap,
-                oneFingerPrintToAllMacsMap,
-                vertexes,
-                bssids);
+                oneLocationManyFingerprintsMap,
+                oneFingerprintManyMacsMap,
+                listVertex,
+                listBSSID);
 
         return internalDatabase;
     }
 
-    public static WekaResultSet getWekaResultSet(Map<Integer, List<SingleDBResult>> map) {
+    public static WekaResultSet generateWekaResultSet(Map<Integer, List<QueryRowResult>> map) {
 
-        HashMap<Integer, List<SingleDBResult>> testSet = new HashMap<>();
-        HashMap<Integer, List<SingleDBResult>> trainingSet = new HashMap<>();
+        HashMap<Integer, List<QueryRowResult>> testSet = new HashMap<>();
+        HashMap<Integer, List<QueryRowResult>> trainingSet = new HashMap<>();
 
         String previousVertex = null;
         boolean first = true;
 
-        for (Map.Entry<Integer, List<SingleDBResult>> entry : map.entrySet()) {
+        for (Map.Entry<Integer, List<QueryRowResult>> entry : map.entrySet()) {
 
             int fingerprint = entry.getKey();
 
-            List<SingleDBResult> resultList = map.get(fingerprint);
+            List<QueryRowResult> resultList = map.get(fingerprint);
 
             String vertex = resultList.get(0).getVertex();
 
@@ -151,18 +155,18 @@ public class DBUtil {
 
     }
 
-    public static WekaResultSet getWekaResultSet(JavaInternalDatabase database) {
+    public static WekaResultSet generateWekaResultSet(JavaInternalDatabase database) {
 
         if (nFingerprintsToTraining <= 0) {
             System.err.println("\nNUMBER OF FINGERPRINTS NEEDS TO BE BIGGER THAN 0 (ZERO), SO WE CAN HAVE A TEST SET.");
             System.exit(0);
         }
 
-        Map<Integer, List<SingleDBResult>> fingerprintsMap = database.getOneFingerPrintToAllMacsMap();
+        Map<Integer, List<QueryRowResult>> fingerprintsMap = database.getOneFingerPrintToAllMacsMap();
         Map<String, Set<Integer>> locationsMap = database.getOneLocationToAllFingerprintsMap();
 
-        HashMap<Integer, List<SingleDBResult>> testSet = new HashMap<>();
-        HashMap<Integer, List<SingleDBResult>> trainingSet = new HashMap<>();
+        HashMap<Integer, List<QueryRowResult>> testSet = new HashMap<>();
+        HashMap<Integer, List<QueryRowResult>> trainingSet = new HashMap<>();
 
         for (Map.Entry<String, Set<Integer>> location : locationsMap.entrySet()) {
 
@@ -170,24 +174,22 @@ public class DBUtil {
 
             Set<Integer> fingerprintIndexes = locationsMap.get(vertex);
 
-            int nFpIndexes = fingerprintIndexes.size();
+            int nFP = fingerprintIndexes.size();
 
-            if (nFingerprintsToTraining >= nFpIndexes) {
+            if (nFingerprintsToTraining >= nFP) {
 
-                System.err.println("\n\nREDUCE NUMBER OF TEST SET FINGERPRINTS -> Vertex " + vertex + "  only has " + nFpIndexes + " Fingerprint(s)!\n" );
+                System.err.println("\n\nREDUCE NUMBER OF TEST SET FINGERPRINTS -> Vertex " + vertex + "  only has " + nFP + " Fingerprint(s)!\n");
                 System.exit(0);
-
             } else {
-
-                int total = nFpIndexes;
+                int total = nFP;
                 for (int fp : fingerprintIndexes) {
 
-                    List<SingleDBResult> singleDBResultList = fingerprintsMap.get(fp);
+                    List<QueryRowResult> queryResultList = fingerprintsMap.get(fp);
 
                     if (total > nFingerprintsToTraining) {
-                        testSet.put(fp, singleDBResultList);
+                        testSet.put(fp, queryResultList);
                     } else {
-                        trainingSet.put(fp, singleDBResultList);
+                        trainingSet.put(fp, queryResultList);
                     }
                     total--;
                 }
@@ -196,10 +198,9 @@ public class DBUtil {
         WekaResultSet wekaResultSet = new WekaResultSet(testSet, trainingSet);
 
         return wekaResultSet;
-
     }
 
-    public static void writeARFF(String fileURL, int testNumber, List<String> distinctMacs, List<String> distinctRooms, Map<Integer, List<SingleDBResult>> dataset) {
+    public static void writeARFF(String fileURL, int testNumber, List<String> distinctMacs, List<String> distinctRooms, Map<Integer, List<QueryRowResult>> dataset) {
 
         PrintWriter writer = null;
 
@@ -224,28 +225,28 @@ public class DBUtil {
             writer.println("");
 
             int numberOfMacs = distinctMacs.size();
-            for (Map.Entry<Integer, List<SingleDBResult>> entry : dataset.entrySet()) {
+            for (Map.Entry<Integer, List<QueryRowResult>> entry : dataset.entrySet()) {
 
                 int fingerprint = entry.getKey();
                 String bssid = null;
 
-                List<SingleDBResult> singleDBResultList = dataset.get(fingerprint);
+                List<QueryRowResult> queryRowResultList = dataset.get(fingerprint);
                 List<Integer> strengthList = new ArrayList<>(Collections.nCopies(numberOfMacs, 0));
 
-                for (SingleDBResult singleDBResult : singleDBResultList) {
+                for (QueryRowResult queryRowResult : queryRowResultList) {
 
-                    bssid = singleDBResult.getBssid();
+                    bssid = queryRowResult.getBssid();
 
                     if (distinctMacs.contains(bssid)) {
                         int index = distinctMacs.indexOf(bssid);
-                        strengthList.set(index, singleDBResult.getStrength());
+                        strengthList.set(index, queryRowResult.getStrength());
                     }
                 }
 
                 for (int strength : strengthList) {
                     writer.print(strength + ",");
                 }
-                String vertex = singleDBResultList.get(0).getVertex();
+                String vertex = queryRowResultList.get(0).getVertex();
                 writer.print(vertex);
                 writer.println("");
             }
@@ -260,7 +261,7 @@ public class DBUtil {
     private static List<?> removeListDuplicates(List<?> list) {
 
         List<Object> newList = new ArrayList<>();
-        
+
         for (Object x : list) {
 
             if (!newList.contains(x)) {
@@ -268,5 +269,14 @@ public class DBUtil {
             }
         }
         return newList;
+    }
+
+    public static String getCurrentTime() {
+        Calendar rightNow = Calendar.getInstance();
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        String formattedDate = dateFormat.format(rightNow.getTime());
+
+        return formattedDate;
     }
 }

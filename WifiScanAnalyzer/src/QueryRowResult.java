@@ -1,17 +1,17 @@
 /**
  * Created by ruibrito on 04/06/15.
  */
-public class SingleDBResult {
+public class QueryRowResult {
 
     private int fingerprint;
     private String vertex;
     private String bssid;
     private int strength;
 
-    public SingleDBResult() {
+    public QueryRowResult() {
     }
 
-    public SingleDBResult(int fingerprint, String vertex, String bssid, int strength) {
+    public QueryRowResult(int fingerprint, String vertex, String bssid, int strength) {
         this.fingerprint = fingerprint;
         this.vertex = vertex;
         this.bssid = bssid;

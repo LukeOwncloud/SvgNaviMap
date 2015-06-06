@@ -7,30 +7,30 @@ import java.util.Map;
  */
 public class WekaResultSet {
 
-    private Map<Integer, List<SingleDBResult>> testSet;
-    private Map<Integer, List<SingleDBResult>> trainingSet;
+    private Map<Integer, List<QueryRowResult>> testSet;
+    private Map<Integer, List<QueryRowResult>> trainingSet;
 
     public WekaResultSet() {
     }
 
-    public WekaResultSet(HashMap<Integer, List<SingleDBResult>> testSet, HashMap<Integer, List<SingleDBResult>> trainingSet) {
+    public WekaResultSet(HashMap<Integer, List<QueryRowResult>> testSet, HashMap<Integer, List<QueryRowResult>> trainingSet) {
         this.testSet = testSet;
         this.trainingSet = trainingSet;
     }
 
-    public Map<Integer, List<SingleDBResult>> getTestSet() {
+    public Map<Integer, List<QueryRowResult>> getTestSet() {
         return testSet;
     }
 
-    public void setTestSet(Map<Integer, List<SingleDBResult>> testSet) {
+    public void setTestSet(Map<Integer, List<QueryRowResult>> testSet) {
         this.testSet = testSet;
     }
 
-    public Map<Integer, List<SingleDBResult>> getTrainingSet() {
+    public Map<Integer, List<QueryRowResult>> getTrainingSet() {
         return trainingSet;
     }
 
-    public void setTrainingSet(Map<Integer, List<SingleDBResult>> trainingSet) {
+    public void setTrainingSet(Map<Integer, List<QueryRowResult>> trainingSet) {
         this.trainingSet = trainingSet;
     }
 }
