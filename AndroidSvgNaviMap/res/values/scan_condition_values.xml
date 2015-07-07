@@ -14,7 +14,6 @@
     </string-array>
 
     <string-array name="barriers_array">
-        <item>none</item>
         <item>0</item>
         <item>1</item>
         <item>2</item>
@@ -23,15 +22,16 @@
     </string-array>
 
     <string-array name="devices_array">
+        <item>unknown</item>
         <item>none</item>
         <item>yes</item>
-        <item>unknow</item>
     </string-array>
 
     <string-array name="people_array">
         <item>none</item>
-        <item>some</item>
-        <item>crowd</item>
+        <item>1-2</item>
+        <item>3-6</item>
+        <item>6+</item>
     </string-array>
 
 </resources>

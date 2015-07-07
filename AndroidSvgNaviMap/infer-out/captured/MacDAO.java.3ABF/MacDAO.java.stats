@@ -1,0 +1,22 @@
+
+++++++++++++++++++++++++++++++++++++++++++++++++++
++ FILE: /Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/db/dao/MacDAO.java  LOC: 104  VISITED: 34/90 SYMOPS: 475
++  num_procs: 6 (6 ok, 0 timeouts, 0 errors, 0 warnings, 25 infos)
++  detail procs:
++    - No Errors and No Specs: 0
++    - Some Errors and No Specs: 0
++    - No Errors and Some Specs: 6
++    - Some Errors and Some Specs: 0
++  errors: 
++  warnings: 
++  infos:  SKIP_FUNCTION:25
++  specs: 6
+++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Detailed errors during footprint phase:
+
+Detailed errors during re-execution phase:
+
+Detailed warnings during footprint phase:
+
+Detailed warnings during re-execution phase:

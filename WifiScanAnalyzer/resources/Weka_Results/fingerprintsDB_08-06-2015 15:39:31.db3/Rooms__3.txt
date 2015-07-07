@@ -1,0 +1,76 @@
+DATABASE : fingerprintsDB_08-06-2015 15:39:31.db3
+
+RESULT n_3 on 24-06-2015 15:33:11
+
+QUERY : 
+SELECT F.fp_ID, M.mac_ID, M.bssid, M.strength, L.vertex, F.date
+  FROM 
+      Fingerprint AS F 
+          INNER JOIN
+      Location AS L
+          on F.fp_Location = L.loc_ID
+          INNER JOIN
+      Mac as M
+          on M.mac_FP = F.fp_ID
+WHERE L.vertex in (4038, 4039, 4040, 4041, 4005, 4006, 4007, 4023, 4022)
+AND F.date >= '08-06-2015 15:22:00' AND F.date <= '08-06-2015 15:33:00' 
+
+NOTE : 
+Rooms First Test 
+ 
+
+Results
+==================
+
+Correctly Classified Instances          16               47.0588 %
+Incorrectly Classified Instances        18               52.9412 %
+Kappa statistic                          0.3793
+Mean absolute error                      0.2059
+Root mean squared error                  0.3188
+Relative absolute error                 84.0686 %
+Root relative squared error             91.107  %
+Total Number of Instances               34     
+
+
+
+
+Details
+==================
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+                 1         0.103      0.625     1         0.769      0.979    4007
+                 0.4       0          1         0.4       0.571      0.928    4022
+                 0.6       0.241      0.3       0.6       0.4        0.783    4006
+                 0.2       0          1         0.2       0.333      0.6      4023
+                 0.6       0.069      0.6       0.6       0.6        0.934    4005
+                 0.4       0.207      0.25      0.4       0.308      0.828    4039
+                 0         0          0         0         0          0.321    4040
+Weighted Avg.    0.471     0.091      0.555     0.471     0.438      0.781
+
+
+
+
+Confusion Matrix
+==================
+
+ a b c d e f g   <-- classified as
+ 5 0 0 0 0 0 0 | a = 4007
+ 1 2 2 0 0 0 0 | b = 4022
+ 1 0 3 0 1 0 0 | c = 4006
+ 0 0 3 1 0 1 0 | d = 4023
+ 0 0 1 0 3 1 0 | e = 4005
+ 1 0 1 0 1 2 0 | f = 4039
+ 0 0 0 0 0 4 0 | g = 4040
+
+
+Matrix Results 
+==================
+
+Room:	Correct:	Incorrect:	Results:
+4007	5.000000	0.000000	Normal
+4022	2.000000	3.000000	ATTENTION
+4006	3.000000	2.000000	Normal
+4023	1.000000	4.000000	ATTENTION
+4005	3.000000	2.000000	Normal
+4039	2.000000	3.000000	ATTENTION
+4040	0.000000	4.000000	ATTENTION

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="0.0" y="301.0">TestQuery</node>
+    <node x="350.0" y="312.0">JavaInternalDatabase</node>
+    <node x="747.0" y="356.0">WekaResultSet</node>
+    <node x="117.01785714285711" y="646.0">Analyzer</node>
+    <node x="619.9404761904761" y="624.0">DBUtil</node>
+    <node x="694.6071428571429" y="0.0">QueryRowResult</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="DBUtil" target="WekaResultSet">
+      <point x="0.0" y="-103.0" />
+      <point x="849.9404761904761" y="599.0" />
+      <point x="875.5" y="599.0" />
+      <point x="0.0" y="81.5" />
+    </edge>
+    <edge source="Analyzer" target="TestQuery">
+      <point x="-89.66666666666669" y="-81.0" />
+      <point x="161.85119047619042" y="599.0" />
+      <point x="82.5" y="599.0" />
+      <point x="-82.5" y="136.5" />
+    </edge>
+    <edge source="Analyzer" target="JavaInternalDatabase">
+      <point x="89.66666666666663" y="-81.0" />
+      <point x="341.18452380952374" y="599.0" />
+      <point x="444.25" y="599.0" />
+      <point x="-94.25" y="125.5" />
+    </edge>
+    <edge source="WekaResultSet" target="QueryRowResult">
+      <point x="0.0" y="-81.5" />
+      <point x="875.5" y="276.0" />
+      <point x="868.6071428571429" y="276.0" />
+      <point x="0.0" y="125.5" />
+    </edge>
+    <edge source="DBUtil" target="QueryRowResult">
+      <point x="153.33333333333326" y="-103.0" />
+      <point x="1003.2738095238094" y="599.0" />
+      <point x="1014.5" y="599.0" />
+      <point x="1014.5" y="276.0" />
+      <point x="984.6071428571429" y="276.0" />
+      <point x="116.0" y="125.5" />
+    </edge>
+    <edge source="JavaInternalDatabase" target="QueryRowResult">
+      <point x="-1.1368683772161603E-13" y="-125.5" />
+      <point x="538.4999999999999" y="276.0" />
+      <point x="752.6071428571429" y="276.0" />
+      <point x="-116.0" y="125.5" />
+    </edge>
+    <edge source="DBUtil" target="JavaInternalDatabase">
+      <point x="-153.33333333333348" y="-103.0" />
+      <point x="696.6071428571427" y="599.0" />
+      <point x="632.7499999999999" y="599.0" />
+      <point x="94.24999999999989" y="125.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.6939003320185386" x="405.6540909038837" y="515.8402153278001" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>Project Files</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

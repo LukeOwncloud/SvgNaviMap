@@ -1,0 +1,24 @@
+
+++++++++++++++++++++++++++++++++++++++++++++++++++
++ FILE: /Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/Utils.java  LOC: 77  VISITED: 11/35 SYMOPS: 1080
++  num_procs: 4 (2 ok, 2 timeouts, 0 errors, 2 warnings, 8 infos)
++  detail procs:
++    - No Errors and No Specs: 2
++    - Some Errors and No Specs: 0
++    - No Errors and Some Specs: 2
++    - Some Errors and Some Specs: 0
++  errors: 
++  warnings:  NULL_TEST_AFTER_DEREFERENCE:2
++  infos:  SKIP_FUNCTION:8
++  specs: 2
+++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Detailed errors during footprint phase:
+
+Detailed errors during re-execution phase:
+
+Detailed warnings during footprint phase:
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/Utils.java:54: WARNING: NULL_TEST_AFTER_DEREFERENCE Pointer source was dereferenced at line 50 and is tested for null at line 54
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/Utils.java:57: WARNING: NULL_TEST_AFTER_DEREFERENCE Pointer destination was dereferenced at line 51 and is tested for null at line 57
+
+Detailed warnings during re-execution phase:

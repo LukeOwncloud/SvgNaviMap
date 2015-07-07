@@ -1,0 +1,70 @@
+DATABASE : fingerprintsDB_06-07-2015 18:32:51.db3
+
+RESULT n_25 on 06-07-2015 22:59:53
+
+QUERY : 
+SELECT F.fp_ID, M.mac_ID, M.bssid, M.strength, L.vertex, F.date
+  FROM 
+      Fingerprint AS F 
+          INNER JOIN
+      Location AS L
+          on F.fp_Location = L.loc_ID
+          INNER JOIN
+      Mac as M
+          on M.mac_FP = F.fp_ID
+WHERE L.vertex in (2123, 2124, 2151, 2152, 2153, 2131, 2130)
+AND F.date >= '2015-06-08 08:00:00' AND F.date <= '2015-07-01 19:00:00' 
+
+CONDITIONS & NOTE : 
+Pool, E2
+All the Pool tests
+
+
+================== Results ==================
+
+Correctly Classified Instances           6               85.7143 %
+Incorrectly Classified Instances         1               14.2857 %
+Kappa statistic                          0.8333
+Mean absolute error                      0.1347
+Root mean squared error                  0.2328
+Relative absolute error                 55      %
+Root relative squared error             66.4605 %
+Total Number of Instances                7     
+
+
+================== Details ==================
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+                 1         0          1         1         1          1        2151
+                 1         0          1         1         1          1        2152
+                 1         0          1         1         1          1        2153
+                 1         0          1         1         1          1        2130
+                 1         0          1         1         1          1        2131
+                 0         0          0         0         0          0.75     2123
+                 1         0.167      0.5       1         0.667      0.917    2124
+Weighted Avg.    0.857     0.024      0.786     0.857     0.81       0.952
+
+
+ ================== Confusion Matrix ==================
+
+ a b c d e f g   <-- classified as
+ 1 0 0 0 0 0 0 | a = 2151
+ 0 1 0 0 0 0 0 | b = 2152
+ 0 0 1 0 0 0 0 | c = 2153
+ 0 0 0 1 0 0 0 | d = 2130
+ 0 0 0 0 1 0 0 | e = 2131
+ 0 0 0 0 0 0 1 | f = 2123
+ 0 0 0 0 0 0 1 | g = 2124
+
+
+Matrix Results 
+==================
+
+Room:	Correct:	Incorrect:	Results:
+2151	1.000000	0.000000	Normal
+2152	1.000000	0.000000	Normal
+2153	1.000000	0.000000	Normal
+2130	1.000000	0.000000	Normal
+2131	1.000000	0.000000	Normal
+2123	0.000000	1.000000	ATTENTION
+2124	1.000000	0.000000	Normal

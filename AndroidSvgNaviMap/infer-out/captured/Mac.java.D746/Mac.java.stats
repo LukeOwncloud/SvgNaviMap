@@ -1,0 +1,22 @@
+
+++++++++++++++++++++++++++++++++++++++++++++++++++
++ FILE: /Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/db/model/Mac.java  LOC: 82  VISITED: 65/80 SYMOPS: 392
++  num_procs: 15 (15 ok, 0 timeouts, 0 errors, 0 warnings, 0 infos)
++  detail procs:
++    - No Errors and No Specs: 0
++    - Some Errors and No Specs: 0
++    - No Errors and Some Specs: 15
++    - Some Errors and Some Specs: 0
++  errors: 
++  warnings: 
++  infos: 
++  specs: 15
+++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Detailed errors during footprint phase:
+
+Detailed errors during re-execution phase:
+
+Detailed warnings during footprint phase:
+
+Detailed warnings during re-execution phase:

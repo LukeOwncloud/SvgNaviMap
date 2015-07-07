@@ -1,0 +1,22 @@
+
+++++++++++++++++++++++++++++++++++++++++++++++++++
++ FILE: /Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/james/weka/impl/InstanceParser.java  LOC: 113  VISITED: 21/26 SYMOPS: 450
++  num_procs: 6 (5 ok, 1 timeouts, 0 errors, 0 warnings, 23 infos)
++  detail procs:
++    - No Errors and No Specs: 1
++    - Some Errors and No Specs: 0
++    - No Errors and Some Specs: 5
++    - Some Errors and Some Specs: 0
++  errors: 
++  warnings: 
++  infos:  SKIP_FUNCTION:23
++  specs: 5
+++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Detailed errors during footprint phase:
+
+Detailed errors during re-execution phase:
+
+Detailed warnings during footprint phase:
+
+Detailed warnings during re-execution phase:

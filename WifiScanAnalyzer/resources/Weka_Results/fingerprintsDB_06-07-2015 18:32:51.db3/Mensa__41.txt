@@ -1,0 +1,70 @@
+DATABASE : fingerprintsDB_06-07-2015 18:32:51.db3
+
+RESULT n_41 on 06-07-2015 22:59:54
+
+QUERY : 
+SELECT F.fp_ID, M.mac_ID, M.bssid, M.strength, L.vertex, F.date
+  FROM 
+      Fingerprint AS F 
+          INNER JOIN
+      Location AS L
+          on F.fp_Location = L.loc_ID
+          INNER JOIN
+      Mac as M
+          on M.mac_FP = F.fp_ID
+WHERE L.vertex in (4137, 4138, 4139, 4141, 4142, 4143, 4144)
+AND F.date >= '2015-06-30 08:00:00' AND F.date <= '2015-06-30 10:00:00' 
+
+CONDITIONS & NOTE : 
+Mensa, M0, Clear, - ,1-2 6+, Yes, Unknown
+Morning in the mensa, normal thing
+
+
+================== Results ==================
+
+Correctly Classified Instances           5               71.4286 %
+Incorrectly Classified Instances         2               28.5714 %
+Kappa statistic                          0.6667
+Mean absolute error                      0.1469
+Root mean squared error                  0.2669
+Relative absolute error                 60      %
+Root relative squared error             75.9799 %
+Total Number of Instances                7     
+
+
+================== Details ==================
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+                 0         0          0         0         0          0.833    4141
+                 1         0          1         1         1          1        4144
+                 1         0          1         1         1          1        4142
+                 1         0          1         1         1          1        4138
+                 1         0.167      0.5       1         0.667      0.833    4139
+                 0         0          0         0         0          1        4143
+                 1         0.167      0.5       1         0.667      1        4137
+Weighted Avg.    0.714     0.048      0.571     0.714     0.619      0.952
+
+
+ ================== Confusion Matrix ==================
+
+ a b c d e f g   <-- classified as
+ 0 0 0 0 0 0 1 | a = 4141
+ 0 1 0 0 0 0 0 | b = 4144
+ 0 0 1 0 0 0 0 | c = 4142
+ 0 0 0 1 0 0 0 | d = 4138
+ 0 0 0 0 1 0 0 | e = 4139
+ 0 0 0 0 1 0 0 | f = 4143
+ 0 0 0 0 0 0 1 | g = 4137
+
+
+Matrix Results 
+==================
+
+Room:	Correct:	Incorrect:	Results:
+4141	0.000000	1.000000	ATTENTION
+4144	1.000000	0.000000	Normal
+4142	1.000000	0.000000	Normal
+4138	1.000000	0.000000	Normal
+4139	1.000000	0.000000	Normal
+4143	0.000000	1.000000	ATTENTION
+4137	1.000000	0.000000	Normal

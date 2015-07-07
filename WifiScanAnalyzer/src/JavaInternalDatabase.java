@@ -10,7 +10,6 @@ public class JavaInternalDatabase {
     private List<String> allRooms;
     private List<String> allBSSIDs;
 
-
     public JavaInternalDatabase() {
         oneLocationToAllFingerprintsMap = new HashMap<>();
         oneFingerPrintToAllMacsMap = new HashMap<>();

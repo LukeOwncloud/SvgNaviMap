@@ -12,8 +12,6 @@ import java.util.*;
  */
 public class DBUtil {
 
-    private static final int nFingerprintsToTraining = 1;
-
     public static List<String> getDistinctMacs(Connection connection) {
 
         List<String> listDistinctMacs = new ArrayList<>();
@@ -157,9 +155,11 @@ public class DBUtil {
 
     public static WekaResultSet generateWekaResultSet(JavaInternalDatabase database) {
 
+        int nFingerprintsToTraining = Analyzer.nFingerprintsToTraining;
+
         if (nFingerprintsToTraining <= 0) {
             System.err.println("\nNUMBER OF FINGERPRINTS NEEDS TO BE BIGGER THAN 0 (ZERO), SO WE CAN HAVE A TEST SET.");
-            System.exit(0);
+            return null;
         }
 
         Map<Integer, List<QueryRowResult>> fingerprintsMap = database.getOneFingerPrintToAllMacsMap();
@@ -179,7 +179,7 @@ public class DBUtil {
             if (nFingerprintsToTraining >= nFP) {
 
                 System.err.println("\n\nREDUCE NUMBER OF TEST SET FINGERPRINTS -> Vertex " + vertex + "  only has " + nFP + " Fingerprint(s)!\n");
-                System.exit(0);
+                return null;
             } else {
                 int total = nFP;
                 for (int fp : fingerprintIndexes) {

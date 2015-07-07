@@ -1,0 +1,29 @@
+
+++++++++++++++++++++++++++++++++++++++++++++++++++
++ FILE: /Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/MainActivity.java  LOC: 1042  VISITED: 407/714 SYMOPS: 7677
++  num_procs: 74 (63 ok, 5 timeouts, 1 errors, 1 warnings, 251 infos)
++  detail procs:
++    - No Errors and No Specs: 10
++    - Some Errors and No Specs: 1
++    - No Errors and Some Specs: 63
++    - Some Errors and Some Specs: 0
++  errors:  RESOURCE_LEAK:1
++  warnings:  PRECONDITION_NOT_MET:1
++  infos:  SKIP_FUNCTION:251
++  specs: 92
+++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Detailed errors during footprint phase:
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/MainActivity.java:1005: ERROR: RESOURCE_LEAK  resource acquired by call to FileOutputStream(...) at line 1003 is not released after line 1005
+
+Detailed errors during re-execution phase:
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/MainActivity.java:1005: ERROR: RESOURCE_LEAK  resource acquired by call to FileOutputStream(...) at line 1003 is not released after line 1005
+
+Detailed warnings during footprint phase:
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/MainActivity.java:991: WARNING: PRECONDITION_NOT_MET in call to onPostExecute(...) at line 991
+
+Detailed warnings during re-execution phase:
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/MainActivity.java:90: WARNING: PRECONDITION_NOT_MET in call to createScanConditionsDialog() at line 90
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/MainActivity.java:892: WARNING: PRECONDITION_NOT_MET in call to scan() at line 892
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/MainActivity.java:961: WARNING: PRECONDITION_NOT_MET in call to wekaServiceOn() at line 961
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/MainActivity.java:1016: WARNING: PRECONDITION_NOT_MET in call to fileDownloaded(...) at line 1016

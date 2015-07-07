@@ -67,7 +67,7 @@ public class DBUtil {
     public static String getCurrentTime() {
         Calendar rightNow = Calendar.getInstance();
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String formattedDate = dateFormat.format(rightNow.getTime());
 
         return formattedDate;

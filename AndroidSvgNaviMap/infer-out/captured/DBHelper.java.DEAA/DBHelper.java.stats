@@ -1,0 +1,25 @@
+
+++++++++++++++++++++++++++++++++++++++++++++++++++
++ FILE: /Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/db/DBHelper.java  LOC: 163  VISITED: 23/87 SYMOPS: 315
++  num_procs: 5 (5 ok, 0 timeouts, 2 errors, 1 warnings, 17 infos)
++  detail procs:
++    - No Errors and No Specs: 0
++    - Some Errors and No Specs: 0
++    - No Errors and Some Specs: 4
++    - Some Errors and Some Specs: 1
++  errors:  RESOURCE_LEAK:2
++  warnings:  NULL_TEST_AFTER_DEREFERENCE:1
++  infos:  SKIP_FUNCTION:17
++  specs: 5
+++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Detailed errors during footprint phase:
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/db/DBHelper.java:141: ERROR: RESOURCE_LEAK  resource acquired by call to rawQuery(...) at line 132 is not released after line 141
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/db/DBHelper.java:145: ERROR: RESOURCE_LEAK  resource acquired by call to rawQuery(...) at line 132 is not released after line 145
+
+Detailed errors during re-execution phase:
+
+Detailed warnings during footprint phase:
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/db/DBHelper.java:138: WARNING: NULL_TEST_AFTER_DEREFERENCE Pointer c was dereferenced at line 132 and is tested for null at line 138
+
+Detailed warnings during re-execution phase:

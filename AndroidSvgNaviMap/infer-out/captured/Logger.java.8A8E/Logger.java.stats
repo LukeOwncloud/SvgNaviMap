@@ -1,0 +1,22 @@
+
+++++++++++++++++++++++++++++++++++++++++++++++++++
++ FILE: /Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/Logger.java  LOC: 718  VISITED: 238/287 SYMOPS: 1897
++  num_procs: 49 (48 ok, 1 timeouts, 0 errors, 0 warnings, 47 infos)
++  detail procs:
++    - No Errors and No Specs: 1
++    - Some Errors and No Specs: 0
++    - No Errors and Some Specs: 48
++    - Some Errors and Some Specs: 0
++  errors: 
++  warnings: 
++  infos:  SKIP_FUNCTION:47
++  specs: 56
+++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Detailed errors during footprint phase:
+
+Detailed errors during re-execution phase:
+
+Detailed warnings during footprint phase:
+
+Detailed warnings during re-execution phase:

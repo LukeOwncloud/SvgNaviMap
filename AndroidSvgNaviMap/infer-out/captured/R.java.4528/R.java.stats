@@ -1,0 +1,22 @@
+
+++++++++++++++++++++++++++++++++++++++++++++++++++
++ FILE: /Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/build/generated/source/r/release/de/tuhh/ti5/androidsvgnavimap/R.java  LOC: 210  VISITED: 59/73 SYMOPS: 272
++  num_procs: 14 (14 ok, 0 timeouts, 0 errors, 0 warnings, 0 infos)
++  detail procs:
++    - No Errors and No Specs: 0
++    - Some Errors and No Specs: 0
++    - No Errors and Some Specs: 14
++    - Some Errors and Some Specs: 0
++  errors: 
++  warnings: 
++  infos: 
++  specs: 14
+++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Detailed errors during footprint phase:
+
+Detailed errors during re-execution phase:
+
+Detailed warnings during footprint phase:
+
+Detailed warnings during re-execution phase:

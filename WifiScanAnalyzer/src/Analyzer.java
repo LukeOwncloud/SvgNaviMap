@@ -23,16 +23,17 @@ import java.util.Map;
  */
 public class Analyzer {
 
+    public static final int nFingerprintsToTraining = 1; // Used in DBUtil, here for easy access.
+
     private static List<TestQuery> queriesForTesting;
     private static List<String> distinctMacs;
     private static List<String> distinctRooms;
-
     private static JavaInternalDatabase database;
 
+    // private static String DATABASE_FILENAME = "fingerprintsDB_05-06-2015 19:43:39.db3";
+    // private static String DATABASE_FILENAME = "fingerprintsDB_05-06-2015 20:01:25.db3";
 
-    private static String DATABASE_FILENAME = "fingerprintsDB_05-06-2015 19:43:39.db3";
-
-
+    private static String DATABASE_FILENAME = "fingerprintsDB_06-07-2015 18:32:51.db3";
     private static String DATABASE_LOCATION = "resources/Databases/" + DATABASE_FILENAME + "/";
     private static String RESULTS_FOLDER = "resources/Weka_Results/" + DATABASE_FILENAME + "/";
     private static String TEST_SET_FOLDER = "resources/ARFF_Testset/" + DATABASE_FILENAME + "/";
@@ -53,25 +54,18 @@ public class Analyzer {
 
             prepareOutputFolders();
 
-            // distinctMacs = DBUtil.getDistinctMacs(connection);
-            // distinctRooms = DBUtil.getDistinctRooms(connection);
-
             queriesForTesting = getQueriesForTesting();
             for (TestQuery testQuery : queriesForTesting) {
+                System.out.print("Test " + testQuery.getType() + "__" + testQuery.getTestNumber() + "...........");
 
-                int testN = queriesForTesting.indexOf(testQuery);
-
-                System.out.print("Test " + testN + "...........");
-
-                String query = testQuery.getQuery();
-                String queryNote = testQuery.getNote();
-
-                createARFF(statement, query, testN);
-                wekaAnalysis(query, testN, queryNote);
-
+                createARFF(statement, testQuery);
+                try {
+                    wekaAnalysis(testQuery);
+                } catch (Exception e) {
+                    System.err.println(" FINGERPINTS ERROR ");
+                    continue;
+                }
                 System.out.println(" done.");
-
-
             }
             statement.close();
             connection.close();
@@ -88,6 +82,82 @@ public class Analyzer {
             }
         }
 
+    }
+
+    public static List<TestQuery> getQueriesForTesting() {
+        List<TestQuery> queries = new ArrayList<>();
+
+        // queries.add(new TestQuery(1, "All",     " 1 = 1 ", null, "All the results"));
+
+        // Time of day - Corridor
+        queries.add(new TestQuery(2, "Corridor", " F.date >= '2015-06-08 08:00:00' AND F.date <= '2015-07-01 19:00:00' ", "Corridor, E4", "All the Corridor tests"));
+        queries.add(new TestQuery(3, "Corridor", " strftime('%H', F.date) >= '08' AND strftime('%H', F.date) <= '11' ", "Corridor, E4", "Corridor - Morning"));
+        queries.add(new TestQuery(4, "Corridor", " strftime('%H', F.date) >= '11' AND strftime('%H', F.date) <= '15' ", "Corridor, E4", "Corridor - Lunch"));
+        queries.add(new TestQuery(5, "Corridor", " strftime('%H', F.date) >= '15' AND strftime('%H', F.date) <= '17' ", "Corridor, E4", "Corridor - Afternoon"));
+        queries.add(new TestQuery(6, "Corridor", " strftime('%H', F.date) >= '17' AND strftime('%H', F.date) <= '19' ", "Corridor, E4", "Corridor - Night"));
+
+        // Corridor Tests
+        queries.add(new TestQuery(7, "Corridor", " F.date >= '2015-06-08 15:12:00' AND F.date <= '2015-06-08 15:19:00' ", "Corridor, E4, Clear, 2, No, Unknown", "Corridor First Test"));
+        queries.add(new TestQuery(8, "Corridor", " F.date >= '2015-06-24 14:48:00' AND F.date <= '2015-06-24 15:08:00' ", "Corridor, E4, Cloudy, 2, No 1-2, Yes, Unknown", "No notes"));
+        queries.add(new TestQuery(9, "Corridor", " F.date >= '2015-06-24 17:00:00' AND F.date <= '2015-06-24 18:00:00' ", "Corridor, E4, Cloudy, 2, No 1-2, Yes, Unknown", "No notes"));
+        queries.add(new TestQuery(10, "Corridor", " F.date >= '2015-06-29 18:00:00' AND F.date <= '2015-06-29 19:00:00' ", "Corridor, E4, Clear, 2, No, Unknown", "Late in the evening"));
+        queries.add(new TestQuery(11, "Corridor", " F.date >= '2015-06-30 08:00:00' AND F.date <= '2015-06-30 10:10:00' ", "Corridor, E4, Clear, 2, No, Unknown", "Normal morning"));
+        queries.add(new TestQuery(12, "Corridor", " F.date >= '2015-06-30 11:00:00' AND F.date <= '2015-06-30 13:30:00' ", "Corridor, E4, Clear, 2, No, Unknown", "Lunch Hour"));
+        queries.add(new TestQuery(13, "Corridor", " F.date >= '2015-06-30 11:00:00' AND F.date <= '2015-06-30 13:00:00' ", "Corridor, E4, Clear, 2, No, Unknown", "Early Lunch Hour"));
+        queries.add(new TestQuery(14, "Corridor", " F.date >= '2015-06-30 13:00:00' AND F.date <= '2015-06-30 13:30:00' ", "Corridor, E4, Clear, 2, No, Unknown", "Late Lunch Hour"));
+        queries.add(new TestQuery(15, "Corridor", " F.date >= '2015-06-30 16:00:00' AND F.date <= '2015-06-30 17:00:00' ", "Corridor, E4, Clear, 2, No, Yes, Unknown", "Only Ohrt has in the ofice, so almost no people"));
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        // Time of day - Rooms
+        queries.add(new TestQuery(16, "Rooms", " F.date >= '2015-06-08 08:00:00' AND F.date <= '2015-07-01 19:00:00' ", "Rooms, E4", "All the Rooms tests"));
+        queries.add(new TestQuery(17, "Rooms", " strftime('%H', F.date) >= '08' AND strftime('%H', F.date) <= '11' ", "Rooms, E4", "Rooms - Morning"));
+        queries.add(new TestQuery(18, "Rooms", " strftime('%H', F.date) >= '11' AND strftime('%H', F.date) <= '15' ", "Rooms, E4", "Rooms - Lunch"));
+        queries.add(new TestQuery(19, "Rooms", " strftime('%H', F.date) >= '15' AND strftime('%H', F.date) <= '17' ", "Rooms, E4", "Rooms - Afternoon"));
+        queries.add(new TestQuery(20, "Rooms", " strftime('%H', F.date) >= '17' AND strftime('%H', F.date) <= '19' ", "Rooms, E4", "Rooms - Night"));
+
+        // Rooms Tests
+        queries.add(new TestQuery(21, "Rooms", " F.date >= '2015-06-08 15:22:00' AND F.date <= '2015-06-08 15:33:00' ", "Rooms, E4, Clear, 2, No, Unknown", "Rooms First Real Test"));
+        queries.add(new TestQuery(22, "Rooms", " F.date >= '2015-06-24 14:48:00' AND F.date <= '2015-06-24 15:08:00' ", "Rooms, E4, Cloudy, 2 4, No 1-2, Yes, Unknown", "Fiz merda, App crash, no"));
+        queries.add(new TestQuery(23, "Rooms", " F.date >= '2015-06-30 11:00:00' AND F.date <= '2015-06-30 13:30:00' ", "Rooms, E4, Clear, 2 4, No 1-2, Yes, Unknown", "Lunch Hour"));
+        queries.add(new TestQuery(24, "Rooms", " F.date >= '2015-06-30 16:00:00' AND F.date <= '2015-06-30 17:00:00' ", "Rooms, E4, Clear, 2 4 , No 1-2, Yes, Unknown", "Middle of the afternoon"));
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        // Time of day - Pool
+        queries.add(new TestQuery(25, "Pool", " F.date >= '2015-06-08 08:00:00' AND F.date <= '2015-07-01 19:00:00' ", "Pool, E2", "All the Pool tests"));
+        queries.add(new TestQuery(26, "Pool", " strftime('%H', F.date) >= '08' AND strftime('%H', F.date) <= '11' ", "Pool, E2", "Pool - Morning"));
+        queries.add(new TestQuery(27, "Pool", " strftime('%H', F.date) >= '11' AND strftime('%H', F.date) <= '15' ", "Pool, E2", "Pool - Lunch"));
+        queries.add(new TestQuery(28, "Pool", " strftime('%H', F.date) >= '15' AND strftime('%H', F.date) <= '17' ", "Pool, E2", "Pool - Afternoon"));
+        queries.add(new TestQuery(29, "Pool", " strftime('%H', F.date) >= '17' AND strftime('%H', F.date) <= '19' ", "Pool, E2", "Pool - Night"));
+
+        // Corridor Pool
+        queries.add(new TestQuery(30, "Pool", " F.date >= '2015-06-24 15:08:00' AND F.date <= '2015-06-24 15:20:00' ", "Pool, E2, Cloudy, 2 4, No, 1-2, 3-6, Yes, Unknown", " No notes"));
+        queries.add(new TestQuery(31, "Pool", " F.date >= '2015-06-24 17:00:00' AND F.date <= '2015-06-24 18:00:00' ", "Pool, E2, Cloudy, 2 4, No, 1-2, 3-6, Yes, Unknown", "Very few people, good test"));
+        queries.add(new TestQuery(32, "Pool", " F.date >= '2015-06-29 18:00:00' AND F.date <= '2015-06-29 19:00:00' ", "Pool, E2, Clear, 2 4, No, 1-2 3-6, Yes, Unknown", "A lot of people in locations 2123, 2131, 2130 ---- only 2 people at 2124\""));
+        queries.add(new TestQuery(33, "Pool", " F.date >= '2015-06-30 08:00:00' AND F.date <= '2015-06-30 10:00:00' ", "Pool, E2, Clear, 2 4, No, 1-2 3-6, Yes, Unknown", "Normal morning"));
+        queries.add(new TestQuery(34, "Pool", " F.date >= '2015-06-30 11:00:00' AND F.date <= '2015-06-30 13:30:00' ", "Pool, E2, Clear, 2 4, No, 1-2 3-6, Yes, Unknown", "Lunch Hour"));
+        queries.add(new TestQuery(35, "Pool", " F.date >= '2015-06-30 17:50:00' AND F.date <= '2015-06-30 19:00:00' ", "Pool, E2, Clear, 2 4, No, 1-2 3-6, Yes, Unknown", "Worse scan ever, made 2 mistakes at 2124 and 2153"));
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        // Time of day - Mensa
+        queries.add(new TestQuery(36, "Mensa", " F.date >= '2015-06-08 08:00:00' AND F.date <= '2015-07-01 19:00:00' ", "Mensa, E2", "All the Mensa tests"));
+        queries.add(new TestQuery(37, "Mensa", " strftime('%H', F.date) >= '08' AND strftime('%H', F.date) <= '11' ", "Mensa, E2", "Mensa - Morning"));
+        queries.add(new TestQuery(38, "Mensa", " strftime('%H', F.date) >= '11' AND strftime('%H', F.date) <= '15' ", "Mensa, E2", "Mensa - Lunch"));
+        queries.add(new TestQuery(39, "Mensa", " strftime('%H', F.date) >= '15' AND strftime('%H', F.date) <= '17' ", "Mensa, E2", "Mensa - Afternoon"));
+        queries.add(new TestQuery(40, "Mensa", " strftime('%H', F.date) >= '17' AND strftime('%H', F.date) <= '19'  ", "Mensa, E2", "Mensa - Night"));
+
+        // Mensa Tests
+        queries.add(new TestQuery(41, "Mensa", " F.date >= '2015-06-30 08:00:00' AND F.date <= '2015-06-30 10:00:00' ", "Mensa, M0, Clear, - ,1-2 6+, Yes, Unknown", "Morning in the mensa, normal thing"));
+        queries.add(new TestQuery(42, "Mensa", " F.date >= '2015-06-30 11:00:00' AND F.date <= '2015-06-30 13:30:00' ", "Mensa, M0, Clear, - ,1-2 6+, Yes, Unknown", "Lunch Hour"));
+        queries.add(new TestQuery(43, "Mensa", " F.date >= '2015-06-30 17:50:00' AND F.date <= '2015-06-30 19:00:00' ", "Mensa, M0, Clear, - ,No 1-2, Yes, Unknown", "No Loc. 168 (4144), also I think I made a mistake"));
+        queries.add(new TestQuery(44, "Mensa", " F.date >= '2015-0-01 10:50:00' AND F.date <= '2015-07-01 19:00:00' ", "Mensa, M0, Clear, - ,No 1-2, Yes, Unknown", "Last Mensa test"));
+
+        return queries;
     }
 
     private static void prepareOutputFolders() {
@@ -121,19 +191,10 @@ public class Analyzer {
         }
     }
 
-    public static List<TestQuery> getQueriesForTesting() {
+    private static void wekaAnalysis(TestQuery testQuery) throws Exception {
 
-        List<TestQuery> queries = new ArrayList<>();
-
-        queries.add(new TestQuery(" 1 = 1 ", "Corredor First Test"));
-
-        return queries;
-    }
-
-    private static void wekaAnalysis(String testQuery, int testNumber, String queryNote) throws Exception {
-
-        String trainingDataPath = TRAINING_SET_FOLDER + "training" + testNumber + ".arff";
-        String testDataPath = TEST_SET_FOLDER + "test" + testNumber + ".arff";
+        String testDataPath = TRAINING_SET_FOLDER + "training" + testQuery.getTestNumber() + ".arff";
+        String trainingDataPath = TEST_SET_FOLDER + "test" + testQuery.getTestNumber() + ".arff";
 
         DataSource trainingSource = new DataSource(trainingDataPath);
         Instances trainingData = trainingSource.getDataSet();
@@ -163,9 +224,9 @@ public class Analyzer {
         Evaluation eval = new Evaluation(newTrainingData);
         eval.evaluateModel(randomForest, testData);
 
-        String evalSummary = eval.toSummaryString("\nResults\n==================\n", false);
-        String evalClassDetails = eval.toClassDetailsString("\n\n\nDetails\n==================\n");
-        String evalConfusionMatrix = eval.toMatrixString("\n\n\nConfusion Matrix\n==================\n");
+        String evalSummary = eval.toSummaryString("\n================== Results ==================\n", false);
+        String evalClassDetails = eval.toClassDetailsString("\n================== Details ==================\n");
+        String evalConfusionMatrix = eval.toMatrixString("\n ================== Confusion Matrix ==================\n");
 
         double[][] confusionMatrix = eval.confusionMatrix();
 
@@ -197,9 +258,7 @@ public class Analyzer {
         }
 
         writeResultFile(
-                testNumber,
                 testQuery,
-                queryNote,
                 evalSummary,
                 evalClassDetails,
                 evalConfusionMatrix,
@@ -207,19 +266,19 @@ public class Analyzer {
                 matrixIncorrectMap);
     }
 
-    private static void writeResultFile(int testNumber, String testQuery, String queryNote, String summary, String classDetails, String confusionMatrix, Map<String, Double> matrixCorrectMap, Map<String, Double> matrixIncorrectMap) {
+    private static void writeResultFile(TestQuery testQuery, String summary, String classDetails, String confusionMatrix, Map<String, Double> matrixCorrectMap, Map<String, Double> matrixIncorrectMap) {
 
         try {
-            String fileName = RESULTS_FOLDER + "result" + testNumber + ".txt";
+            String fileName = RESULTS_FOLDER + testQuery.getType() + "__" + testQuery.getTestNumber() + ".txt";
 
             FileWriter outFile = new FileWriter(fileName);
             PrintWriter out = new PrintWriter(outFile);
 
             // Write text to file
             out.println("DATABASE : " + DATABASE_FILENAME);
-            out.println("\nRESULT n_" + testNumber + " on " + DBUtil.getCurrentTime());
-            out.println("\nQUERY : \n" + testQuery);
-            out.print("\nNOTE : \n" + queryNote + " \n \n");
+            out.println("\nRESULT n_" + testQuery.getTestNumber() + " on " + DBUtil.getCurrentTime());
+            out.println("\nQUERY : \n" + testQuery.getQuery());
+            out.print("\nCONDITIONS & NOTE : \n" + "" + testQuery.getCondtions() + "\n" + testQuery.getNote() + "\n\n");
             out.println(summary);
             out.println(classDetails);
             out.println(confusionMatrix);
@@ -236,12 +295,11 @@ public class Analyzer {
                 Double incorrect = matrixIncorrectMap.get(room);
 
                 double total = correct - incorrect;
-                if(total < 0) {
+                if (total <= 0) {
                     out.printf(sFormater, room, correct, incorrect, "ATTENTION\n");
                 } else {
                     out.printf(sFormater, room, correct, incorrect, "Normal\n");
                 }
-
             }
 
             out.close();
@@ -251,20 +309,24 @@ public class Analyzer {
 
     }
 
-    private static void createARFF(Statement statement, String testQuery, int testNumber) throws ClassNotFoundException, SQLException {
+    private static void createARFF(Statement statement, TestQuery testQuery) throws ClassNotFoundException, SQLException {
 
-        database = DBUtil.buildDatabase(testQuery, statement);
+        database = DBUtil.buildDatabase(testQuery.getQuery(), statement);
 
         distinctMacs = database.getAllBSSIDs();
         distinctRooms = database.getAllRooms();
 
         WekaResultSet wekaResultSets = DBUtil.generateWekaResultSet(database);
 
-        DBUtil.writeARFF(TEST_SET_FOLDER + "test", testNumber,
-                distinctMacs, distinctRooms, wekaResultSets.getTestSet());
-        DBUtil.writeARFF(TRAINING_SET_FOLDER + "training", testNumber,
-                distinctMacs, distinctRooms, wekaResultSets.getTrainingSet());
-    }
+        if (wekaResultSets == null) {
+            writeResultFile(testQuery, "NO SUMMARY", "NO DETAILS", "NO CONFUSION MATRIX", null, null);
+        } else {
 
+            DBUtil.writeARFF(TEST_SET_FOLDER + "test", testQuery.getTestNumber(),
+                    distinctMacs, distinctRooms, wekaResultSets.getTestSet());
+            DBUtil.writeARFF(TRAINING_SET_FOLDER + "training", testQuery.getTestNumber(),
+                    distinctMacs, distinctRooms, wekaResultSets.getTrainingSet());
+        }
+    }
 
 }
