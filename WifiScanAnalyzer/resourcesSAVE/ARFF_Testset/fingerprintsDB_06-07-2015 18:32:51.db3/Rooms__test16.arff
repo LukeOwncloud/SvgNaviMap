@@ -1,0 +1,50 @@
+@relation _tm450
+
+@attribute 00:1b:11:a8:31:ec integer
+@attribute 6c:aa:b3:39:d3:d8 integer
+@attribute 6c:aa:b3:38:fa:1c integer
+@attribute 6c:aa:b3:38:fa:18 integer
+@attribute 6c:aa:b3:37:bb:18 integer
+@attribute 6c:aa:b3:37:bb:1c integer
+@attribute 6c:aa:b3:38:39:a8 integer
+@attribute 84:18:3a:29:05:38 integer
+@attribute 6c:aa:b3:79:d3:d8 integer
+@attribute 6c:aa:b3:78:fa:1c integer
+@attribute 6c:aa:b3:78:fa:18 integer
+@attribute 6c:aa:b3:77:bb:18 integer
+@attribute 6c:aa:b3:77:bb:1c integer
+@attribute 6c:aa:b3:78:39:a8 integer
+@attribute 84:18:3a:69:05:38 integer
+@attribute 84:18:3a:28:fa:b8 integer
+@attribute 14:30:c6:3e:e5:7c integer
+@attribute 84:18:3a:68:fa:b8 integer
+@attribute 6c:aa:b3:b8:fa:17 integer
+@attribute 6c:aa:b3:3a:03:18 integer
+@attribute 6c:aa:b3:ba:03:18 integer
+@attribute 6c:aa:b3:7a:03:18 integer
+@attribute 84:18:3a:29:0e:08 integer
+@attribute 84:18:3a:69:0e:08 integer
+@attribute 84:18:3a:2c:55:88 integer
+@attribute 84:18:3a:6c:55:88 integer
+@attribute 84:18:3a:29:05:3c integer
+@attribute 84:18:3a:69:05:3c integer
+@attribute 6c:aa:b3:38:39:ac integer
+@attribute 6c:aa:b3:78:39:ac integer
+@attribute 6c:aa:b3:39:e1:a8 integer
+@attribute 00:0e:8f:18:9a:93 integer
+@attribute 00:1c:28:9e:a0:ef integer
+@attribute 6c:aa:b3:79:e1:a8 integer
+
+@attribute ROOM {4041,4040,4039,4038,4007,4022,4006,4023,4005,}
+
+@data
+
+40,54,0,66,78,0,85,0,54,0,67,79,0,86,0,0,87,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4006
+0,62,0,51,78,0,79,0,62,0,51,79,0,79,0,0,85,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4023
+44,62,68,58,87,0,78,0,62,68,58,86,0,79,0,0,78,0,68,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4005
+0,43,0,60,61,0,84,81,44,0,64,62,0,84,82,0,0,0,0,0,0,0,0,0,0,0,85,86,0,0,0,0,0,0,4040
+43,46,0,68,74,0,84,0,47,0,68,74,0,84,0,0,83,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4007
+0,35,0,55,53,0,87,76,35,0,55,53,0,78,77,78,0,78,0,90,88,91,81,82,0,0,87,87,0,0,0,0,0,0,4041
+0,52,0,57,71,0,84,0,50,0,56,71,0,88,0,0,78,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4022
+0,50,0,43,79,0,65,76,50,0,43,77,0,65,77,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,90,0,0,0,4038
+0,48,0,46,74,0,0,80,48,0,46,74,0,0,78,0,85,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4039

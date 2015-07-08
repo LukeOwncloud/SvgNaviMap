@@ -180,16 +180,18 @@ public class DBUtil {
 
                 System.err.println("\n\nREDUCE NUMBER OF TEST SET FINGERPRINTS -> Vertex " + vertex + "  only has " + nFP + " Fingerprint(s)!\n");
                 return null;
+
             } else {
+
                 int total = nFP;
                 for (int fp : fingerprintIndexes) {
 
                     List<QueryRowResult> queryResultList = fingerprintsMap.get(fp);
 
                     if (total > nFingerprintsToTraining) {
-                        testSet.put(fp, queryResultList);
-                    } else {
                         trainingSet.put(fp, queryResultList);
+                    } else {
+                        testSet.put(fp, queryResultList);
                     }
                     total--;
                 }

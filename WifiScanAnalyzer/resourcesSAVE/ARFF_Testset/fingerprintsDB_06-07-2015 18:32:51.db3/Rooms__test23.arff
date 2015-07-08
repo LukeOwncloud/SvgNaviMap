@@ -1,0 +1,37 @@
+@relation _tm450
+
+@attribute 6c:aa:b3:39:d3:d8 integer
+@attribute 6c:aa:b3:79:d3:d8 integer
+@attribute 6c:aa:b3:37:bb:18 integer
+@attribute 6c:aa:b3:77:bb:18 integer
+@attribute 6c:aa:b3:78:fa:18 integer
+@attribute 6c:aa:b3:38:fa:18 integer
+@attribute 14:30:c6:3e:e5:7c integer
+@attribute 84:18:3a:28:fa:b8 integer
+@attribute 84:18:3a:68:fa:b8 integer
+@attribute 84:18:3a:29:05:38 integer
+@attribute 84:18:3a:69:05:38 integer
+@attribute 6c:aa:b3:38:39:a8 integer
+@attribute 6c:aa:b3:78:39:a8 integer
+@attribute 6c:aa:b3:38:39:ac integer
+@attribute 6c:aa:b3:78:39:ac integer
+@attribute 84:18:3a:29:0e:08 integer
+@attribute 84:18:3a:69:0e:08 integer
+@attribute 6c:aa:b3:ba:03:18 integer
+@attribute 6c:aa:b3:3a:03:18 integer
+@attribute 6c:aa:b3:7a:03:18 integer
+@attribute 00:1c:28:9e:a0:ef integer
+
+@attribute ROOM {4038,4039,4040,4041,4005,4023,4022,4006,4007,}
+
+@data
+
+62,62,78,79,51,51,85,0,0,0,0,79,79,0,0,0,0,0,0,0,0,4023
+33,34,65,68,59,59,85,81,80,70,72,74,74,0,0,0,0,0,0,0,0,4041
+47,47,76,75,50,50,74,75,76,81,77,67,68,0,0,0,0,0,0,0,0,4038
+57,58,0,0,59,60,0,0,0,0,0,0,91,0,0,0,0,0,0,0,0,4006
+51,51,77,78,55,55,0,0,0,0,0,79,78,0,0,0,0,0,0,0,0,4040
+52,50,71,71,56,57,78,0,0,0,0,84,88,0,0,0,0,0,0,0,0,4022
+69,69,87,87,63,63,82,0,0,0,0,82,82,0,0,0,0,0,0,0,0,4005
+48,48,74,74,46,46,85,0,0,80,78,0,0,0,0,0,0,0,0,0,0,4039
+45,45,73,73,63,64,0,0,0,0,0,0,91,0,0,0,0,0,0,0,0,4007

@@ -36,6 +36,7 @@ public class Analyzer {
     private static String DATABASE_FILENAME = "fingerprintsDB_06-07-2015 18:32:51.db3";
     private static String DATABASE_LOCATION = "resources/Databases/" + DATABASE_FILENAME + "/";
     private static String RESULTS_FOLDER = "resources/Weka_Results/" + DATABASE_FILENAME + "/";
+
     private static String TEST_SET_FOLDER = "resources/ARFF_Testset/" + DATABASE_FILENAME + "/";
     private static String TRAINING_SET_FOLDER = "resources/ARFF_Trainingset/" + DATABASE_FILENAME + "/";
 
@@ -54,15 +55,18 @@ public class Analyzer {
 
             prepareOutputFolders();
 
+            final List<String> allBSSIDinDB = DBUtil.getDistinctMacs(connection);
+
             queriesForTesting = getQueriesForTesting();
             for (TestQuery testQuery : queriesForTesting) {
                 System.out.print("Test " + testQuery.getType() + "__" + testQuery.getTestNumber() + "...........");
 
-                createARFF(statement, testQuery);
+                createARFF(statement, testQuery, testQuery.getType());
                 try {
                     wekaAnalysis(testQuery);
                 } catch (Exception e) {
-                    System.err.println(" FINGERPINTS ERROR ");
+                    // e.printStackTrace();
+                    System.err.println(" FINGERPINTS ERROR --- " + e.getMessage());
                     continue;
                 }
                 System.out.println(" done.");
@@ -193,8 +197,10 @@ public class Analyzer {
 
     private static void wekaAnalysis(TestQuery testQuery) throws Exception {
 
-        String testDataPath = TRAINING_SET_FOLDER + "training" + testQuery.getTestNumber() + ".arff";
-        String trainingDataPath = TEST_SET_FOLDER + "test" + testQuery.getTestNumber() + ".arff";
+        final String type = testQuery.getType();
+
+        String  trainingDataPath = TRAINING_SET_FOLDER + type + "__training" + testQuery.getTestNumber() + ".arff";
+        String testDataPath = TEST_SET_FOLDER + type + "__test" + testQuery.getTestNumber() + ".arff";
 
         DataSource trainingSource = new DataSource(trainingDataPath);
         Instances trainingData = trainingSource.getDataSet();
@@ -210,6 +216,11 @@ public class Analyzer {
 
         String optionString = "-I 20 -K 0 -S 1";
         String[] options = weka.core.Utils.splitOptions(optionString);
+
+        String[] options2 = new String[3];
+            options2[0] = "-I 100";
+            options2[1] = "-K 0";
+            options2[2] = "-S 1";
 
         Remove remove = new Remove();
         remove.setOptions(options);
@@ -309,7 +320,7 @@ public class Analyzer {
 
     }
 
-    private static void createARFF(Statement statement, TestQuery testQuery) throws ClassNotFoundException, SQLException {
+    private static void createARFF(Statement statement, TestQuery testQuery, String type) throws ClassNotFoundException, SQLException {
 
         database = DBUtil.buildDatabase(testQuery.getQuery(), statement);
 
@@ -322,9 +333,9 @@ public class Analyzer {
             writeResultFile(testQuery, "NO SUMMARY", "NO DETAILS", "NO CONFUSION MATRIX", null, null);
         } else {
 
-            DBUtil.writeARFF(TEST_SET_FOLDER + "test", testQuery.getTestNumber(),
+            DBUtil.writeARFF(TEST_SET_FOLDER + type + "__test", testQuery.getTestNumber(),
                     distinctMacs, distinctRooms, wekaResultSets.getTestSet());
-            DBUtil.writeARFF(TRAINING_SET_FOLDER + "training", testQuery.getTestNumber(),
+            DBUtil.writeARFF(TRAINING_SET_FOLDER + type + "__training", testQuery.getTestNumber(),
                     distinctMacs, distinctRooms, wekaResultSets.getTrainingSet());
         }
     }
