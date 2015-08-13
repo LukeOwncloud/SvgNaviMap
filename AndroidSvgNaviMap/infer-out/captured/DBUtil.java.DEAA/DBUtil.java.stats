@@ -1,0 +1,23 @@
+
+++++++++++++++++++++++++++++++++++++++++++++++++++
++ FILE: /Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/db/DBUtil.java  LOC: 110  VISITED: 11/13 SYMOPS: 912
++  num_procs: 4 (2 ok, 2 timeouts, 1 errors, 0 warnings, 21 infos)
++  detail procs:
++    - No Errors and No Specs: 1
++    - Some Errors and No Specs: 1
++    - No Errors and Some Specs: 2
++    - Some Errors and Some Specs: 0
++  errors:  RESOURCE_LEAK:1
++  warnings: 
++  infos:  SKIP_FUNCTION:21
++  specs: 2
+++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Detailed errors during footprint phase:
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/db/DBUtil.java:105: ERROR: RESOURCE_LEAK  resource acquired by call to FileInputStream(...) at line 95 is not released after line 105
+
+Detailed errors during re-execution phase:
+
+Detailed warnings during footprint phase:
+
+Detailed warnings during re-execution phase:

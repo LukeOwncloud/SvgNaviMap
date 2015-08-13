@@ -1,0 +1,65 @@
+@relation _tm450
+
+@attribute 6c:aa:b3:38:6a:58 integer
+@attribute 6c:aa:b3:37:d1:28 integer
+@attribute 6c:aa:b3:37:90:d8 integer
+@attribute 6c:aa:b3:37:d1:2c integer
+@attribute 6c:aa:b3:39:0b:bc integer
+@attribute 6c:aa:b3:78:6a:58 integer
+@attribute 6c:aa:b3:77:d1:28 integer
+@attribute 6c:aa:b3:77:90:d8 integer
+@attribute 6c:aa:b3:77:d1:2c integer
+@attribute 6c:aa:b3:79:0b:bc integer
+@attribute 6c:aa:b3:78:86:e8 integer
+@attribute 6c:aa:b3:39:0b:b8 integer
+@attribute 6c:aa:b3:38:86:e8 integer
+@attribute 6c:aa:b3:79:0b:b8 integer
+@attribute 84:18:3a:2c:6b:88 integer
+@attribute e8:fc:af:88:91:78 integer
+@attribute 84:18:3a:2c:1b:c8 integer
+@attribute 84:18:3a:6c:6b:88 integer
+@attribute 84:18:3a:6c:1b:c8 integer
+@attribute 84:94:8c:e2:01:fa integer
+@attribute 6c:aa:b3:37:c9:68 integer
+@attribute 6c:aa:b3:ba:03:1c integer
+@attribute 6c:aa:b3:7a:03:1c integer
+@attribute 6c:aa:b3:3a:03:1c integer
+@attribute 6c:aa:b3:7a:03:18 integer
+@attribute 6c:aa:b3:77:c9:68 integer
+@attribute 84:9c:a6:ca:83:0f integer
+@attribute 02:23:08:60:36:48 integer
+@attribute 6c:aa:b3:3a:03:18 integer
+@attribute 6c:aa:b3:ba:03:18 integer
+@attribute 84:94:8c:e2:01:f8 integer
+@attribute bc:4d:fb:0b:17:e8 integer
+@attribute 84:18:3a:2b:f2:e8 integer
+@attribute 6c:aa:b3:13:23:f8 integer
+@attribute 6c:aa:b3:53:23:f8 integer
+@attribute 56:5a:04:09:26:9a integer
+@attribute bc:4d:fb:0b:17:ea integer
+@attribute 34:31:c4:0a:ea:d2 integer
+@attribute 64:66:b3:78:82:8b integer
+@attribute 6c:aa:b3:37:90:dc integer
+@attribute 6c:aa:b3:77:90:dc integer
+@attribute 6c:aa:b3:39:e1:a8 integer
+@attribute 6c:aa:b3:b9:e1:a8 integer
+@attribute 6c:aa:b3:79:e1:a8 integer
+@attribute 84:18:3a:29:0e:08 integer
+@attribute 84:18:3a:69:0e:08 integer
+@attribute 12:a0:96:f6:ec:b3 integer
+@attribute 34:31:c4:eb:da:d2 integer
+@attribute 64:66:b3:78:82:8a integer
+@attribute c0:25:06:83:b3:df integer
+@attribute 08:96:d7:b2:5f:c8 integer
+
+@attribute ROOM {2151,2152,2153,2131,2130,2123,2124,}
+
+@data
+
+38,51,70,67,85,39,52,70,68,85,73,71,71,70,79,0,75,80,74,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2151
+63,63,0,82,0,63,62,0,82,0,84,0,84,0,77,0,0,78,0,79,0,0,0,0,0,0,81,75,0,0,81,83,0,0,0,0,82,81,85,86,86,0,0,0,0,0,0,83,0,0,0,2123
+41,62,0,77,0,41,62,0,78,0,61,0,63,0,65,0,84,65,84,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2130
+33,51,76,66,85,33,50,76,65,86,68,73,68,78,62,0,81,63,82,88,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2152
+57,73,87,86,0,57,73,85,86,0,83,0,82,0,78,77,77,73,79,78,0,0,0,0,0,0,0,80,0,0,81,0,0,0,0,0,0,77,86,0,0,0,0,0,0,0,0,74,0,0,0,2124
+46,50,77,61,0,46,51,77,62,0,71,0,72,0,73,0,81,81,82,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2153
+56,76,0,90,0,56,77,0,89,0,75,0,77,0,71,0,0,72,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2131

@@ -1,0 +1,29 @@
+
+++++++++++++++++++++++++++++++++++++++++++++++++++
++ FILE: /Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/db/dao/LocationDAO.java  LOC: 123  VISITED: 31/59 SYMOPS: 950
++  num_procs: 8 (5 ok, 0 timeouts, 1 errors, 1 warnings, 24 infos)
++  detail procs:
++    - No Errors and No Specs: 2
++    - Some Errors and No Specs: 1
++    - No Errors and Some Specs: 5
++    - Some Errors and Some Specs: 0
++  errors:  RESOURCE_LEAK:1
++  warnings:  NULL_TEST_AFTER_DEREFERENCE:1
++  infos:  SKIP_FUNCTION:24
++  specs: 5
+++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Detailed errors during footprint phase:
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/db/dao/LocationDAO.java:87: ERROR: RESOURCE_LEAK  resource acquired by call to query(...) at line 74 is not released after line 87
+
+Detailed errors during re-execution phase:
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/db/dao/LocationDAO.java:87: ERROR: RESOURCE_LEAK  resource acquired by call to query(...) at line 74 is not released after line 87
+
+Detailed warnings during footprint phase:
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/db/dao/LocationDAO.java:98: WARNING: NULL_TEST_AFTER_DEREFERENCE Pointer cursor was dereferenced at line 92 and is tested for null at line 98
+
+Detailed warnings during re-execution phase:
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/db/dao/LocationDAO.java:65: WARNING: PRECONDITION_NOT_MET in call to cursorToLocation(...) at line 65
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/db/dao/LocationDAO.java:85: WARNING: PRECONDITION_NOT_MET in call to cursorToLocation(...) at line 85
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/db/dao/LocationDAO.java:98: WARNING: NULL_TEST_AFTER_DEREFERENCE Pointer cursor was dereferenced at line 92 and is tested for null at line 98
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/db/dao/LocationDAO.java:102: WARNING: PRECONDITION_NOT_MET in call to cursorToLocation(...) at line 102

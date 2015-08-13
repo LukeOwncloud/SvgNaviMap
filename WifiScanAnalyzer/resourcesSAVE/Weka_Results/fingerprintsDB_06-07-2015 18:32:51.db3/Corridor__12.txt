@@ -1,0 +1,61 @@
+DATABASE : fingerprintsDB_06-07-2015 18:32:51.db3
+
+RESULT n_12 on 07-07-2015 04:52:02
+
+QUERY : 
+SELECT F.fp_ID, M.mac_ID, M.bssid, M.strength, L.vertex, F.date
+  FROM 
+      Fingerprint AS F 
+          INNER JOIN
+      Location AS L
+          on F.fp_Location = L.loc_ID
+          INNER JOIN
+      Mac as M
+          on M.mac_FP = F.fp_ID
+WHERE L.vertex in (4038, 4039, 4040, 4041)
+AND F.date >= '2015-06-30 11:00:00' AND F.date <= '2015-06-30 13:30:00' 
+
+CONDITIONS & NOTE : 
+Corridor, E4, Clear, 2, No, Unknown
+Lunch Hour
+
+
+================== Results ==================
+
+Correctly Classified Instances           1               25      %
+Incorrectly Classified Instances         3               75      %
+Kappa statistic                          0     
+Mean absolute error                      0.2938
+Root mean squared error                  0.4265
+Relative absolute error                 78.3333 %
+Root relative squared error             98.3293 %
+Total Number of Instances                4     
+
+
+================== Details ==================
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+                 0         0          0         0         0          0.667    4038
+                 1         0.667      0.333     1         0.5        0.667    4039
+                 0         0.333      0         0         0          0.667    4040
+                 0         0          0         0         0          1        4041
+Weighted Avg.    0.25      0.25       0.083     0.25      0.125      0.75 
+
+
+ ================== Confusion Matrix ==================
+
+ a b c d   <-- classified as
+ 0 1 0 0 | a = 4038
+ 0 1 0 0 | b = 4039
+ 0 1 0 0 | c = 4040
+ 0 0 1 0 | d = 4041
+
+
+Matrix Results 
+==================
+
+Room:	Correct:	Incorrect:	Results:
+4038	0.000000	1.000000	ATTENTION
+4039	1.000000	0.000000	Normal
+4040	0.000000	1.000000	ATTENTION
+4041	0.000000	1.000000	ATTENTION

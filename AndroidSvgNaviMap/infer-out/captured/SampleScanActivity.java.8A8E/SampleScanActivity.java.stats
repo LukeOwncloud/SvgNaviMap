@@ -1,0 +1,27 @@
+
+++++++++++++++++++++++++++++++++++++++++++++++++++
++ FILE: /Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/SampleScanActivity.java  LOC: 1262  VISITED: 296/352 SYMOPS: 8093
++  num_procs: 43 (31 ok, 12 timeouts, 1 errors, 4 warnings, 365 infos)
++  detail procs:
++    - No Errors and No Specs: 11
++    - Some Errors and No Specs: 1
++    - No Errors and Some Specs: 31
++    - Some Errors and Some Specs: 0
++  errors:  RESOURCE_LEAK:1
++  warnings:  NULL_TEST_AFTER_DEREFERENCE:4
++  infos:  SKIP_FUNCTION:365
++  specs: 48
+++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Detailed errors during footprint phase:
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/SampleScanActivity.java:1175: ERROR: RESOURCE_LEAK  resource acquired by call to FileOutputStream(...) at line 1175 is not released after line 1175
+
+Detailed errors during re-execution phase:
+
+Detailed warnings during footprint phase:
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/SampleScanActivity.java:598: WARNING: NULL_TEST_AFTER_DEREFERENCE Pointer bw was dereferenced at line 534 and is tested for null at line 598
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/SampleScanActivity.java:694: WARNING: NULL_TEST_AFTER_DEREFERENCE Pointer br was dereferenced at line 641 and is tested for null at line 694
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/SampleScanActivity.java:746: WARNING: NULL_TEST_AFTER_DEREFERENCE Pointer bw was dereferenced at line 740 and is tested for null at line 746
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/SampleScanActivity.java:1184: WARNING: NULL_TEST_AFTER_DEREFERENCE Pointer out was dereferenced at line 1175 and is tested for null at line 1184
+
+Detailed warnings during re-execution phase:

@@ -1,0 +1,76 @@
+DATABASE : fingerprintsDB_06-07-2015 18:32:51.db3
+
+RESULT n_23 on 07-07-2015 04:52:03
+
+QUERY : 
+SELECT F.fp_ID, M.mac_ID, M.bssid, M.strength, L.vertex, F.date
+  FROM 
+      Fingerprint AS F 
+          INNER JOIN
+      Location AS L
+          on F.fp_Location = L.loc_ID
+          INNER JOIN
+      Mac as M
+          on M.mac_FP = F.fp_ID
+WHERE L.vertex in (4038, 4039, 4040, 4041, 4005, 4006, 4007, 4023, 4022)
+AND F.date >= '2015-06-30 11:00:00' AND F.date <= '2015-06-30 13:30:00' 
+
+CONDITIONS & NOTE : 
+Rooms, E4, Clear, 2 4, No 1-2, Yes, Unknown
+Lunch Hour
+
+
+================== Results ==================
+
+Correctly Classified Instances           3               33.3333 %
+Incorrectly Classified Instances         6               66.6667 %
+Kappa statistic                          0.25  
+Mean absolute error                      0.1407
+Root mean squared error                  0.2692
+Relative absolute error                 71.25   %
+Root relative squared error             85.2826 %
+Total Number of Instances                9     
+
+
+================== Details ==================
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+                 0         0          0         0         0          1        4038
+                 1         0.25       0.333     1         0.5        0.875    4039
+                 0         0.25       0         0         0          0.313    4040
+                 0         0          0         0         0          1        4041
+                 1         0          1         1         1          1        4005
+                 1         0.125      0.5       1         0.667      1        4023
+                 0         0.125      0         0         0          1        4022
+                 0         0          0         0         0          1        4006
+                 0         0          0         0         0          1        4007
+Weighted Avg.    0.333     0.083      0.204     0.333     0.241      0.91 
+
+
+ ================== Confusion Matrix ==================
+
+ a b c d e f g h i   <-- classified as
+ 0 1 0 0 0 0 0 0 0 | a = 4038
+ 0 1 0 0 0 0 0 0 0 | b = 4039
+ 0 0 0 0 0 0 1 0 0 | c = 4040
+ 0 0 1 0 0 0 0 0 0 | d = 4041
+ 0 0 0 0 1 0 0 0 0 | e = 4005
+ 0 0 0 0 0 1 0 0 0 | f = 4023
+ 0 1 0 0 0 0 0 0 0 | g = 4022
+ 0 0 0 0 0 1 0 0 0 | h = 4006
+ 0 0 1 0 0 0 0 0 0 | i = 4007
+
+
+Matrix Results 
+==================
+
+Room:	Correct:	Incorrect:	Results:
+4038	0.000000	1.000000	ATTENTION
+4039	1.000000	0.000000	Normal
+4040	0.000000	1.000000	ATTENTION
+4041	0.000000	1.000000	ATTENTION
+4005	1.000000	0.000000	Normal
+4023	1.000000	0.000000	Normal
+4022	0.000000	1.000000	ATTENTION
+4006	0.000000	1.000000	ATTENTION
+4007	0.000000	1.000000	ATTENTION

@@ -45,6 +45,7 @@
     <string name="menu_setdestination">Set destination</string>
     <string name="menu_scanqr">Scan QR</string>
     <string name="menu_navigate">Navigate</string>
+    <string name="building">Building number</string>
     <string-array name="weka_algorithms">
         <item>Vote</item>
         <item>Random Tree</item>

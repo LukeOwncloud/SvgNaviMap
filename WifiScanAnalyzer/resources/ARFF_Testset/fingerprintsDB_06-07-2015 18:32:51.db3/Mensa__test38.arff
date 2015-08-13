@@ -1,0 +1,55 @@
+@relation _tm450
+
+@attribute 6c:aa:b3:3c:80:88 integer
+@attribute 6c:aa:b3:7c:80:88 integer
+@attribute 6c:aa:b3:3c:80:8c integer
+@attribute 6c:aa:b3:39:f0:b8 integer
+@attribute 6c:aa:b3:37:f5:68 integer
+@attribute 6c:aa:b3:39:f0:bc integer
+@attribute ea:f6:50:32:ef:a9 integer
+@attribute 6c:aa:b3:7c:80:8c integer
+@attribute 6c:aa:b3:79:f0:b8 integer
+@attribute 6c:aa:b3:77:f5:68 integer
+@attribute 6c:aa:b3:79:f0:bc integer
+@attribute 6c:aa:b3:3c:33:a8 integer
+@attribute 6c:aa:b3:3c:33:ac integer
+@attribute 6c:aa:b3:7c:33:ac integer
+@attribute 6c:aa:b3:7c:33:a8 integer
+@attribute 6c:aa:b3:38:0d:a8 integer
+@attribute 6c:aa:b3:38:0d:ac integer
+@attribute 6c:aa:b3:78:0d:a8 integer
+@attribute 6c:aa:b3:78:0d:ac integer
+@attribute 84:18:3a:2c:06:58 integer
+@attribute be:92:6b:8d:23:55 integer
+@attribute 84:18:3a:6c:06:58 integer
+@attribute 6c:aa:b3:39:7d:3c integer
+@attribute 6c:aa:b3:39:7d:38 integer
+@attribute 6c:aa:b3:79:7d:3c integer
+@attribute 6c:aa:b3:79:7d:38 integer
+@attribute 00:26:99:4f:e1:61 integer
+@attribute 00:26:99:4f:e1:60 integer
+@attribute 00:26:99:4f:db:11 integer
+@attribute 00:26:99:4f:db:10 integer
+@attribute 00:0b:3b:cb:ea:1c integer
+@attribute 18:83:bf:da:3c:1e integer
+@attribute 00:19:cb:57:e4:18 integer
+@attribute 84:18:3a:28:fc:d8 integer
+@attribute 84:18:3a:23:ae:08 integer
+@attribute c0:25:06:71:ee:29 integer
+@attribute bc:14:01:c4:fe:fa integer
+@attribute 84:18:3a:68:fc:d8 integer
+@attribute 84:18:3a:63:ae:08 integer
+@attribute bc:85:56:cf:07:91 integer
+@attribute 74:31:70:10:24:42 integer
+
+@attribute ROOM {4141,4144,4142,4137,4143,4139,4138,}
+
+@data
+
+68,67,62,75,73,72,0,62,75,72,72,83,88,89,83,0,0,0,0,86,0,86,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4142
+70,70,71,69,47,76,0,71,69,46,77,74,82,83,77,0,92,0,90,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4138
+65,66,69,67,63,67,0,69,68,63,66,83,92,90,84,0,0,0,0,83,0,80,0,0,0,0,77,0,87,90,0,0,0,0,0,0,0,0,0,0,0,4143
+61,49,64,57,59,71,0,64,58,59,72,74,90,88,73,82,0,83,0,78,0,78,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4137
+68,67,75,35,79,51,0,75,36,79,50,77,75,75,76,85,91,85,91,82,0,83,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4141
+72,73,75,61,60,75,0,76,63,60,75,69,80,79,69,75,84,75,83,80,0,81,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4144
+69,67,77,75,55,84,0,78,76,55,84,0,0,0,0,0,0,0,0,87,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4139

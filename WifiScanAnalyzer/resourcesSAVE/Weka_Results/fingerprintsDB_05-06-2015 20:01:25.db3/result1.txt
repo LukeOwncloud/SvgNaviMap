@@ -1,0 +1,66 @@
+DATABASE : fingerprintsDB_05-06-2015 20:01:25.db3
+
+RESULT n_1 on 08-06-2015 16:10:11
+
+QUERY : 
+SELECT F.fp_ID, M.mac_ID, M.bssid, M.strength, L.vertex, F.date
+  FROM 
+      Fingerprint AS F 
+          INNER JOIN
+      Location AS L
+          on F.fp_Location = L.loc_ID
+          INNER JOIN
+      Mac as M
+          on M.mac_FP = F.fp_ID
+WHERE  1 = 1 
+
+NOTE : 
+All results 
+ 
+
+Results
+==================
+
+Correctly Classified Instances          12              100      %
+Incorrectly Classified Instances         0                0      %
+Kappa statistic                          1     
+Mean absolute error                      0.2229
+Root mean squared error                  0.283 
+Relative absolute error                 59.4444 %
+Root relative squared error             65.3622 %
+Total Number of Instances               12     
+
+
+
+
+Details
+==================
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+                 1         0          1         1         1          1        4038
+                 1         0          1         1         1          1        4039
+                 1         0          1         1         1          1        4040
+                 1         0          1         1         1          1        4041
+Weighted Avg.    1         0          1         1         1          1    
+
+
+
+
+Confusion Matrix
+==================
+
+ a b c d   <-- classified as
+ 3 0 0 0 | a = 4038
+ 0 3 0 0 | b = 4039
+ 0 0 3 0 | c = 4040
+ 0 0 0 3 | d = 4041
+
+
+Matrix Results 
+==================
+
+Room:	Correct:	Incorrect:	Results:
+4038	3.000000	0.000000	Normal
+4039	3.000000	0.000000	Normal
+4040	3.000000	0.000000	Normal
+4041	3.000000	0.000000	Normal

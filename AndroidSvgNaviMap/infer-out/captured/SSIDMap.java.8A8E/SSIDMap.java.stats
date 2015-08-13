@@ -1,0 +1,23 @@
+
+++++++++++++++++++++++++++++++++++++++++++++++++++
++ FILE: /Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/SSIDMap.java  LOC: 220  VISITED: 17/34 SYMOPS: 1180
++  num_procs: 7 (4 ok, 3 timeouts, 1 errors, 0 warnings, 88 infos)
++  detail procs:
++    - No Errors and No Specs: 2
++    - Some Errors and No Specs: 1
++    - No Errors and Some Specs: 4
++    - Some Errors and Some Specs: 0
++  errors:  RESOURCE_LEAK:1
++  warnings: 
++  infos:  SKIP_FUNCTION:88
++  specs: 4
+++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Detailed errors during footprint phase:
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/SSIDMap.java:55: ERROR: RESOURCE_LEAK  resource acquired by call to Scanner(...) at line 51 is not released after line 55
+
+Detailed errors during re-execution phase:
+
+Detailed warnings during footprint phase:
+
+Detailed warnings during re-execution phase:

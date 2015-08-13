@@ -1,0 +1,22 @@
+
+++++++++++++++++++++++++++++++++++++++++++++++++++
++ FILE: /Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/james/weka/impl/ClassfierUtils.java  LOC: 405  VISITED: 134/165 SYMOPS: 3853
++  num_procs: 23 (17 ok, 6 timeouts, 0 errors, 0 warnings, 119 infos)
++  detail procs:
++    - No Errors and No Specs: 6
++    - Some Errors and No Specs: 0
++    - No Errors and Some Specs: 17
++    - Some Errors and Some Specs: 0
++  errors: 
++  warnings: 
++  infos:  SKIP_FUNCTION:119
++  specs: 24
+++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Detailed errors during footprint phase:
+
+Detailed errors during re-execution phase:
+
+Detailed warnings during footprint phase:
+
+Detailed warnings during re-execution phase:

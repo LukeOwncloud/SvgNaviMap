@@ -1,0 +1,24 @@
+
+++++++++++++++++++++++++++++++++++++++++++++++++++
++ FILE: /Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/james/weka/impl/Transformer.java  LOC: 275  VISITED: 56/63 SYMOPS: 1275
++  num_procs: 9 (7 ok, 2 timeouts, 0 errors, 2 warnings, 62 infos)
++  detail procs:
++    - No Errors and No Specs: 2
++    - Some Errors and No Specs: 0
++    - No Errors and Some Specs: 7
++    - Some Errors and Some Specs: 0
++  errors: 
++  warnings:  RETURN_VALUE_IGNORED:2
++  infos:  SKIP_FUNCTION:62
++  specs: 9
+++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Detailed errors during footprint phase:
+
+Detailed errors during re-execution phase:
+
+Detailed warnings during footprint phase:
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/james/weka/impl/Transformer.java:142: WARNING: RETURN_VALUE_IGNORED after call to put(...) at line 142
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/james/weka/impl/Transformer.java:155: WARNING: RETURN_VALUE_IGNORED after call to put(...) at line 155
+
+Detailed warnings during re-execution phase:

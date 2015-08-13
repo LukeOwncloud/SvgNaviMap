@@ -5,7 +5,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.9.+'
+        classpath 'com.android.tools.build:gradle:1.1.0'
     }
 }
 apply plugin: 'android'
@@ -19,7 +19,7 @@ task copyNativeLibs(type: Copy) {
     into new File(buildDir, 'native-libs')
 }
 
-tasks.withType(Compile) { compileTask -> compileTask.dependsOn copyNativeLibs }
+tasks.withType(JavaCompile) { compileTask -> compileTask.dependsOn copyNativeLibs }
 
 clean.dependsOn 'cleanCopyNativeLibs'
 
@@ -29,8 +29,8 @@ tasks.withType(com.android.build.gradle.tasks.PackageApplication) { pkgTask ->
 }
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion "19.0.3"
+    compileSdkVersion 18
+    buildToolsVersion "22.0.1"
 
     sourceSets {
         main {

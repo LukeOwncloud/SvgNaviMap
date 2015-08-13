@@ -1,0 +1,31 @@
+
+++++++++++++++++++++++++++++++++++++++++++++++++++
++ FILE: /Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/db/AndroidDatabaseManager.java  LOC: 1274  VISITED: 316/480 SYMOPS: 12142
++  num_procs: 66 (49 ok, 12 timeouts, 1 errors, 1 warnings, 251 infos)
++  detail procs:
++    - No Errors and No Specs: 16
++    - Some Errors and No Specs: 1
++    - No Errors and Some Specs: 49
++    - Some Errors and Some Specs: 0
++  errors:  NULL_DEREFERENCE:1
++  warnings:  RETURN_VALUE_IGNORED:1
++  infos:  SKIP_FUNCTION:251
++  specs: 60
+++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Detailed errors during footprint phase:
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/infer-out/sources/com.dm.zbar.android.scanner.ZBarScannerActivity_InferGeneratedHarness.java:9: ERROR: NULL_DEREFERENCE [B5] object ZBarScannerActivity.mPreview last accessed on line 8 could be null and is dereferenced by call to onResume() at line 9, column 1
+
+Detailed errors during re-execution phase:
+
+Detailed warnings during footprint phase:
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/db/AndroidDatabaseManager.java:989: WARNING: RETURN_VALUE_IGNORED after call to getData(...) at line 989
+
+Detailed warnings during re-execution phase:
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/infer-out/sources/com.dm.zbar.android.scanner.ZBarScannerActivity_InferGeneratedHarness.java:8: WARNING: PRECONDITION_NOT_MET in call to onCreate(...) at line 8, column 1
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/infer-out/sources/de.tuhh.ti5.androidsvgnavimap.SampleScanActivity_InferGeneratedHarness.java:11: WARNING: PRECONDITION_NOT_MET in call to onStop() at line 11, column 1
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/infer-out/sources/james.weka.android.LocateService_InferGeneratedHarness.java:11: WARNING: PRECONDITION_NOT_MET in call to onDestroy() at line 11, column 1
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/db/AndroidDatabaseManager.java:206: WARNING: PRECONDITION_NOT_MET in call to getData(...) at line 206
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/db/AndroidDatabaseManager.java:416: WARNING: PRECONDITION_NOT_MET in call to getData(...) at line 416
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/db/AndroidDatabaseManager.java:464: WARNING: PRECONDITION_NOT_MET in call to getData(...) at line 464
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/db/AndroidDatabaseManager.java:728: WARNING: PRECONDITION_NOT_MET in call to getData(...) at line 728

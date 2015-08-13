@@ -1,0 +1,29 @@
+@relation _tm450
+
+@attribute 6c:aa:b3:39:d3:d8 integer
+@attribute 6c:aa:b3:38:fa:18 integer
+@attribute 6c:aa:b3:79:d3:d8 integer
+@attribute 6c:aa:b3:78:fa:18 integer
+@attribute 6c:aa:b3:37:bb:18 integer
+@attribute 6c:aa:b3:77:bb:18 integer
+@attribute 84:18:3a:28:fa:b8 integer
+@attribute 84:18:3a:29:05:38 integer
+@attribute 84:18:3a:69:05:38 integer
+@attribute 14:30:c6:3e:e5:7c integer
+@attribute 6c:aa:b3:78:39:a8 integer
+@attribute 6c:aa:b3:38:39:a8 integer
+@attribute 6c:aa:b3:3a:03:18 integer
+@attribute 6c:aa:b3:7a:03:18 integer
+@attribute 6c:aa:b3:38:39:ac integer
+@attribute 6c:aa:b3:78:39:ac integer
+@attribute 84:18:3a:68:fa:b8 integer
+@attribute 84:18:3a:69:0e:08 integer
+
+@attribute ROOM {4041,4040,4039,4038,}
+
+@data
+
+40,61,40,60,59,61,0,78,77,0,87,84,88,87,0,0,0,0,4041
+55,59,53,59,74,77,79,82,82,86,81,86,0,0,92,0,78,88,4039
+51,55,51,55,77,78,0,0,0,0,78,79,0,0,0,0,0,0,4040
+52,50,52,50,87,77,81,0,0,80,77,76,0,0,86,86,82,0,4038

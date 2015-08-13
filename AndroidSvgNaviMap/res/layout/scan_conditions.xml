@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView android:id="@+id/ScrollView01"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:orientation="vertical"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:scrollbars="vertical"
+                  android:scrollbarAlwaysDrawVerticalTrack="true">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/editText1" android:clickable="false" android:inputType="none" android:text="Building:"/>
+        <EditText
+                android:id="@+id/scan_condition_building"
+                android:inputType="text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Building"
+                android:text="None"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false" android:inputType="none" android:text="Floor:"/>
+        <EditText
+                android:id="@+id/scan_condition_floor"
+                android:inputType="text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Floor"
+                android:text="None"/>
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/editText2"
+                  android:clickable="false" android:inputType="none" android:text="Weather:"/>
+        <Spinner
+                android:id="@+id/scan_condition_weather"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/editText3"
+                  android:clickable="false" android:inputType="none" android:text="Devices:"/>
+        <Spinner
+                android:id="@+id/scan_condition_devices"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/editText4"
+                  android:clickable="false" android:inputType="none" android:text="People:"/>
+        <Spinner
+                android:id="@+id/scan_condition_people"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/editText5"
+                  android:clickable="false" android:inputType="none" android:text="Barrier:"/>
+        <Spinner
+                android:id="@+id/scan_condition_barrier"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
+</ScrollView>

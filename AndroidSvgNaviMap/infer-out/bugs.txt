@@ -1,0 +1,21 @@
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/MainActivity.java:1005: error: RESOURCE_LEAK
+   resource acquired by call to FileOutputStream(...) at line 1003 is not released after line 1005
+
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/SSIDMap.java:55: error: RESOURCE_LEAK
+   resource acquired by call to Scanner(...) at line 51 is not released after line 55
+
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/SampleScanActivity.java:1175: error: RESOURCE_LEAK
+   resource acquired by call to FileOutputStream(...) at line 1175 is not released after line 1175
+
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/db/DBHelper.java:141: error: RESOURCE_LEAK
+   resource acquired by call to rawQuery(...) at line 132 is not released after line 141
+
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/db/DBHelper.java:145: error: RESOURCE_LEAK
+   resource acquired by call to rawQuery(...) at line 132 is not released after line 145
+
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/db/DBUtil.java:105: error: RESOURCE_LEAK
+   resource acquired by call to FileInputStream(...) at line 95 is not released after line 105
+
+/Users/ruibrito/IdeaProjects/SvgNaviMap/AndroidSvgNaviMap/src/de/tuhh/ti5/androidsvgnavimap/db/dao/LocationDAO.java:87: error: RESOURCE_LEAK
+   resource acquired by call to query(...) at line 74 is not released after line 87
+

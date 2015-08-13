@@ -1,0 +1,1 @@
+{"int": {"files": 0, "RESOURCE_LEAK": 7, "lines": 0}, "float": {"reporting_time": 0.39100003242492676, "capture_time": 0.0, "analysis_time": 39.163817167282104}, "normal": {"infer_version": "3ce393f511b62dd3b37e1978c202a70467421a80", "analyzer": "infer"}}
